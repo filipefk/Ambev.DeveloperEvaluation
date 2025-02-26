@@ -10,8 +10,6 @@ public static class AuthenticationExtension
 {
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-
         var secretKey = configuration["Jwt:SecretKey"]?.ToString();
         ArgumentException.ThrowIfNullOrWhiteSpace(secretKey);
 

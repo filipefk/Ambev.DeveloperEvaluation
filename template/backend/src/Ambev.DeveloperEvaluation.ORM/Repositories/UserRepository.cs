@@ -1,6 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Domain.Common;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
@@ -111,10 +111,10 @@ public class UserRepository : IUserRepository
     //            query = query.OrderByDynamic(property, direction, i > 0);
     //        }
     //    }
-        
+
     //    return query;
     //}
 
-    
+
 
 }

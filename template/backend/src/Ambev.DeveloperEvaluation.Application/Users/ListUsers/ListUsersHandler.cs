@@ -27,17 +27,17 @@ public class ListUsersHandler : IRequestHandler<ListUsersCommand, ListUsersResul
             throw new ValidationException(validationResult.Errors);
 
         var paginatedResult = await _userRepository.GetAllAsync(command.Page, command.Size, command.Order!, cancellationToken);
-        
+
         if (paginatedResult == null)
             throw new InvalidOperationException("No users found");
 
         var baseUsersResult = _mapper.Map<List<BaseUserResult>>(paginatedResult.Results);
 
         var result = new ListUsersResult(
-            baseUsersResult, 
-            paginatedResult.CurrentPage, 
-            paginatedResult.TotalPages, 
-            paginatedResult.PageSize, 
+            baseUsersResult,
+            paginatedResult.CurrentPage,
+            paginatedResult.TotalPages,
+            paginatedResult.PageSize,
             paginatedResult.TotalCount);
 
         return result;

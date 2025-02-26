@@ -5,5 +5,5 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
 /// </summary>
 public class CreateUserResponse : BaseUserResponse
 {
-    
+
 }
