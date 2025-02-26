@@ -1,7 +1,7 @@
-﻿namespace Ambev.DeveloperEvaluation.Domain.Repositories
+﻿namespace Ambev.DeveloperEvaluation.Domain.Repositories;
+
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        Task Commit();
-    }
+    Task Commit();
 }
+

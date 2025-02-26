@@ -2,38 +2,37 @@
 
 #nullable disable
 
-namespace Ambev.DeveloperEvaluation.ORM.Migrations
+namespace Ambev.DeveloperEvaluation.ORM.Migrations;
+
+/// <inheritdoc />
+public partial class AddFieldsCreatedAtAndUpdatedAtToUser : Migration
 {
     /// <inheritdoc />
-    public partial class AddFieldsCreatedAtAndUpdatedAtToUser : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "CreatedAt",
-                table: "Users",
-                type: "timestamp with time zone",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+        migrationBuilder.AddColumn<DateTime>(
+            name: "CreatedAt",
+            table: "Users",
+            type: "timestamp with time zone",
+            nullable: false,
+            defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "UpdatedAt",
-                table: "Users",
-                type: "timestamp with time zone",
-                nullable: true);
-        }
+        migrationBuilder.AddColumn<DateTime>(
+            name: "UpdatedAt",
+            table: "Users",
+            type: "timestamp with time zone",
+            nullable: true);
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "CreatedAt",
-                table: "Users");
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            name: "CreatedAt",
+            table: "Users");
 
-            migrationBuilder.DropColumn(
-                name: "UpdatedAt",
-                table: "Users");
-        }
+        migrationBuilder.DropColumn(
+            name: "UpdatedAt",
+            table: "Users");
     }
 }
