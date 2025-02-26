@@ -8,6 +8,7 @@ public class PhoneValidator : AbstractValidator<string>
     {
         RuleFor(phone => phone)
             .NotEmpty().WithMessage("The phone cannot be empty.")
-            .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage("The phone format is not valid.");
+            .Matches(@"^\+?[1-9]\d{10,14}$")
+            .WithMessage("The phone number can only contain digits, it can start with '+', the first digit cannot be zero, and it must be between 11 and 15 digits long.");
     }
 }
