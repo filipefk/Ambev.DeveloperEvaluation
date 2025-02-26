@@ -1,7 +1,7 @@
-using AutoMapper;
-using MediatR;
-using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using AutoMapper;
+using FluentValidation;
+using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.GetUser;
 
@@ -35,7 +35,7 @@ public class GetUserHandler : IRequestHandler<GetUserCommand, GetUserResult>
     /// <returns>The user details if found</returns>
     public async Task<GetUserResult> Handle(GetUserCommand request, CancellationToken cancellationToken)
     {
-        var validator = new GetUserValidator();
+        var validator = new GetUserCommandValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)

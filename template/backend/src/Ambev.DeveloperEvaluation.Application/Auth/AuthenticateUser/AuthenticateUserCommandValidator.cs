@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser
 {
-    public class AuthenticateUserValidator : AbstractValidator<AuthenticateUserCommand>
+    public class AuthenticateUserCommandValidator : AbstractValidator<AuthenticateUserCommand>
     {
-        public AuthenticateUserValidator()
+        public AuthenticateUserCommandValidator()
         {
             RuleFor(x => x.Email)
                 .NotEmpty()
@@ -12,7 +12,7 @@ namespace Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser
 
             RuleFor(x => x.Password)
                 .NotEmpty()
-                .MinimumLength(6);
+                .MinimumLength(8);
         }
     }
 }
