@@ -1,20 +1,19 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.UpdateUser;
 using AutoMapper;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.UpdateUser
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.UpdateUser;
+
+/// <summary>
+/// Profile for mapping between Application and API UpdateUser responses
+/// </summary>
+public class UpdateUserProfile : Profile
 {
     /// <summary>
-    /// Profile for mapping between Application and API UpdateUser responses
+    /// Initializes the mappings for UpdateUser feature
     /// </summary>
-    public class UpdateUserProfile : Profile
+    public UpdateUserProfile()
     {
-        /// <summary>
-        /// Initializes the mappings for UpdateUser feature
-        /// </summary>
-        public UpdateUserProfile()
-        {
-            CreateMap<UpdateUserRequest, UpdateUserCommand>();
-            CreateMap<UpdateUserResult, UpdateUserResponse>();
-        }
+        CreateMap<UpdateUserRequest, UpdateUserCommand>();
+        CreateMap<UpdateUserResult, UpdateUserResponse>();
     }
 }

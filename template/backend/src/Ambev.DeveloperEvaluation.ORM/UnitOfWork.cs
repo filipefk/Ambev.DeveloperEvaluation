@@ -1,19 +1,19 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
 
-namespace Ambev.DeveloperEvaluation.ORM
+namespace Ambev.DeveloperEvaluation.ORM;
+
+public class UnitOfWork : IUnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork
+    private readonly DefaultContext _dbContext;
+
+    public UnitOfWork(DefaultContext dbCcontext)
     {
-        private readonly DefaultContext _dbContext;
+        _dbContext = dbCcontext;
+    }
 
-        public UnitOfWork(DefaultContext dbCcontext)
-        {
-            _dbContext = dbCcontext;
-        }
-
-        public async Task Commit()
-        {
-            await _dbContext.SaveChangesAsync();
-        }
+    public async Task Commit()
+    {
+        await _dbContext.SaveChangesAsync();
     }
 }
+
