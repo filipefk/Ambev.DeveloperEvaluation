@@ -51,14 +51,14 @@ public class CreateUserCommand : IRequest<CreateUserResult>
     public UserRole Role { get; set; }
 
 
-    public ValidationResultDetail Validate()
-    {
-        var validator = new CreateUserCommandValidator();
-        var result = validator.Validate(this);
-        return new ValidationResultDetail
-        {
-            IsValid = result.IsValid,
-            Errors = result.Errors.Select(o => (ValidationErrorDetail)o)
-        };
-    }
+    //public ValidationResultDetail Validate()
+    //{
+    //    var validator = new CreateUserCommandValidator();
+    //    var result = validator.Validate(this);
+    //    return new ValidationResultDetail
+    //    {
+    //        IsValid = result.IsValid,
+    //        Errors = result.Errors.Select(o => (ValidationErrorDetail)o)
+    //    };
+    //}
 }
