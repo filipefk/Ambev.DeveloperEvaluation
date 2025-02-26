@@ -1,6 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
-
-namespace Ambev.DeveloperEvaluation.Application.Users;
+﻿namespace Ambev.DeveloperEvaluation.Application.Users;
 
 /// <summary>
 /// Response model base for User Result operations
@@ -28,14 +26,14 @@ public class BaseUserResult
     public string Phone { get; set; } = string.Empty;
 
     /// <summary>
-    /// The user's role in the system
+    /// Gets or sets the user's role
     /// </summary>
-    public UserRole Role { get; set; }
+    public string Role { get; set; } = string.Empty;
 
     /// <summary>
     /// The current status of the user
     /// </summary>
-    public UserStatus Status { get; set; }
+    public string Status { get; set; } = string.Empty;
 }
 
 

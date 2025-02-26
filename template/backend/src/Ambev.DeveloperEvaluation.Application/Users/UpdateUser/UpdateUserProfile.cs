@@ -11,7 +11,9 @@ public class UpdateUserProfile : Profile
     public UpdateUserProfile()
     {
         CreateMap<UpdateUserCommand, User>();
-        CreateMap<User, UpdateUserResult>();
+        CreateMap<User, UpdateUserResult>()
+            .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.ToString()))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
     }
 
 }

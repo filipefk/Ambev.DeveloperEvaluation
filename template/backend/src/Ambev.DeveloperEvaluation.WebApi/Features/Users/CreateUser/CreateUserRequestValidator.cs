@@ -27,7 +27,12 @@ public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
         RuleFor(user => user.Username).SetValidator(new UserNameValidator());
         RuleFor(user => user.Password).SetValidator(new PasswordValidator());
         RuleFor(user => user.Phone).SetValidator(new PhoneValidator());
-        RuleFor(user => user.Status).NotEqual(UserStatus.Unknown).WithMessage("'Status' cannot be 'Unknown'");
-        RuleFor(user => user.Role).NotEqual(UserRole.None).WithMessage("'Role' cannot be 'None'");
+        RuleFor(user => user.Status)
+            .Must(EnumValidatorUtil.BeAValidEnumString<UserStatus>).WithMessage($"'Status' must be a valid value: {EnumValidatorUtil.GetEnumNames<UserStatus>("Unknown")}")
+            .NotEqual(UserStatus.Unknown.ToString()).WithMessage("'Status' cannot be 'Unknown'");
+        RuleFor(user => user.Role)
+            .Must(EnumValidatorUtil.BeAValidEnumString<UserRole>).WithMessage($"'Role' must be a valid value: {EnumValidatorUtil.GetEnumNames<UserRole>("None")}")
+            .NotEqual(UserRole.None.ToString()).WithMessage("'Role' cannot be 'None'");
     }
+
 }
