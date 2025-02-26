@@ -13,11 +13,6 @@ namespace Ambev.DeveloperEvaluation.Application.Users.UpdateUser;
 /// including username, password, phone number, email, status, and role. 
 /// It implements <see cref="IRequest{TResponse}"/> to initiate the request 
 /// that returns a <see cref="UpdateUserResult"/>.
-/// 
-/// The data provided in this command is validated using the 
-/// <see cref="UpdateUserCommandValidator"/> which extends 
-/// <see cref="AbstractValidator{T}"/> to ensure that the fields are correctly 
-/// populated and follow the required rules.
 /// </remarks>
 public class UpdateUserCommand : IRequest<UpdateUserResult>
 {
@@ -56,16 +51,5 @@ public class UpdateUserCommand : IRequest<UpdateUserResult>
     /// </summary>
     public UserRole Role { get; set; }
 
-
-    public ValidationResultDetail Validate()
-    {
-        var validator = new UpdateUserCommandValidator();
-        var result = validator.Validate(this);
-        return new ValidationResultDetail
-        {
-            IsValid = result.IsValid,
-            Errors = result.Errors.Select(o => (ValidationErrorDetail)o)
-        };
-    }
 }
 
