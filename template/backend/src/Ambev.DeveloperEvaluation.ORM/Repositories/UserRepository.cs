@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
@@ -72,4 +73,48 @@ public class UserRepository : IUserRepository
         await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
+
+    public async Task<PaginatedResult<User>?> GetAllAsync(int currentPage, int pageSize, string order = null!, CancellationToken cancellationToken = default)
+    {
+        var totalCount = await _context.Users.CountAsync(cancellationToken);
+
+        if (totalCount == 0)
+            return null;
+
+        var query = _context
+            .Users
+            .AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(order))
+            query = QueryableOrderer.ApplyOrdering(query, order);
+
+        var users = await query
+            .Skip((currentPage - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        var results = new PaginatedResult<User>(users, currentPage, pageSize, totalCount);
+
+        return results;
+    }
+
+    //private IQueryable<User> ApplyOrdering(IQueryable<User> query, string order)
+    //{
+    //    var orderParams = order.Split(',').Select(o => o.Trim().Split(' '));
+    //    for (int i = 0; i < orderParams.Count(); i++)
+    //    {
+    //        var param = orderParams.ElementAt(i);
+    //        if (param.Length == 2)
+    //        {
+    //            var property = param[0].Trim();
+    //            var direction = param[1].Trim().ToLower() == "desc" ? "descending" : "ascending";
+    //            query = query.OrderByDynamic(property, direction, i > 0);
+    //        }
+    //    }
+        
+    //    return query;
+    //}
+
+    
+
 }

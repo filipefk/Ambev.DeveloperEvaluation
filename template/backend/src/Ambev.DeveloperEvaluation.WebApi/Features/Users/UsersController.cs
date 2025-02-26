@@ -1,11 +1,14 @@
-﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
+﻿using Ambev.DeveloperEvaluation.Application.Users;
+using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.GetUser;
+using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
 using Ambev.DeveloperEvaluation.Application.Users.UpdateUser;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
+using Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.UpdateUser;
 using AutoMapper;
 using MediatR;
@@ -140,5 +143,34 @@ public class UsersController : BaseController
         var response = _mapper.Map<UpdateUserResponse>(result);
 
         return Ok(response);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(PaginatedResponse<ListUsersResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetUsers(
+        CancellationToken cancellationToken,
+        [FromQuery] int? _page = 1,
+        [FromQuery] int? _size = 10,
+        [FromQuery] string? _order = null)
+    {
+        var command = new ListUsersCommand()
+        {
+            Page = _page ?? 1,
+            Size = _size ?? 10,
+            Order = _order
+        };
+
+        var result = await _mediator.Send(command, cancellationToken);
+        var listResponse = _mapper.Map<List<BaseUserResponse>>(result.Users);
+
+        var paginatedResponse = new PaginatedList<BaseUserResponse>(
+            listResponse,
+            result.TotalCount,
+            result.CurrentPage,
+            result.PageSize);
+
+        return OkPaginated(paginatedResponse);
     }
 }
