@@ -22,7 +22,6 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, CreateUserRe
     /// </summary>
     /// <param name="userRepository">The user repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
-    /// <param name="validator">The validator for CreateUserCommand</param>
     public CreateUserHandler(
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,

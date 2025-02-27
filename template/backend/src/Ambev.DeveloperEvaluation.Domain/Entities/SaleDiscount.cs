@@ -10,7 +10,7 @@ public class SaleDiscount : BaseEntity
     [Required]
     public Guid SaleId { get; set; }
 
-    public Guid ProductSoldId { get; set; }
+    public required Guid ProductSoldId { get; set; }
 
     [Required]
     [Range(0, 100)]
@@ -24,7 +24,7 @@ public class SaleDiscount : BaseEntity
     [MaxLength(255)]
     public string Reason { get; set; } = string.Empty;
 
-    public Sale Sale { get; set; }
+    public required Sale Sale { get; set; }
 
-    public ProductSold ProductSold { get; set; }
+    public required ProductSold ProductSold { get; set; }
 }

@@ -16,5 +16,5 @@ public class Rating : BaseEntity
     [Required]
     public int Count { get; set; }
 
-    public Product Product { get; set; }
+    public required Product Product { get; set; }
 }
