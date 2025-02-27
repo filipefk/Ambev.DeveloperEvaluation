@@ -50,7 +50,7 @@ partial class DefaultContextModelSnapshot : ModelSnapshot
                     .HasColumnType("uuid");
 
                 b.Property<DateTime>("Date")
-                    .HasColumnType("timestamp with time zone");
+                    .HasColumnType("date");
 
                 b.Property<DateTime?>("UpdatedAt")
                     .HasColumnType("timestamp with time zone");
@@ -216,7 +216,7 @@ partial class DefaultContextModelSnapshot : ModelSnapshot
                     .HasColumnType("boolean");
 
                 b.Property<DateTime>("Date")
-                    .HasColumnType("timestamp with time zone");
+                    .HasColumnType("date");
 
                 b.Property<long>("SaleNumber")
                     .ValueGeneratedOnAdd()

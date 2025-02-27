@@ -17,6 +17,7 @@ public class Sale : BaseEntity
     public long SaleNumber { get; set; }
 
     [Required]
+    [Column(TypeName = "date")]
     public DateTime Date { get; set; } = DateTime.UtcNow;
 
     public ICollection<ProductSold> Products { get; set; } = [];
