@@ -30,7 +30,6 @@ public class UserRepository : IUserRepository
     public async Task<User> CreateAsync(User user, CancellationToken cancellationToken = default)
     {
         await _context.Users.AddAsync(user, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
         return user;
     }
 
@@ -70,7 +69,7 @@ public class UserRepository : IUserRepository
             return false;
 
         _context.Users.Remove(user);
-        await _context.SaveChangesAsync(cancellationToken);
+
         return true;
     }
 
@@ -97,24 +96,5 @@ public class UserRepository : IUserRepository
 
         return results;
     }
-
-    //private IQueryable<User> ApplyOrdering(IQueryable<User> query, string order)
-    //{
-    //    var orderParams = order.Split(',').Select(o => o.Trim().Split(' '));
-    //    for (int i = 0; i < orderParams.Count(); i++)
-    //    {
-    //        var param = orderParams.ElementAt(i);
-    //        if (param.Length == 2)
-    //        {
-    //            var property = param[0].Trim();
-    //            var direction = param[1].Trim().ToLower() == "desc" ? "descending" : "ascending";
-    //            query = query.OrderByDynamic(property, direction, i > 0);
-    //        }
-    //    }
-
-    //    return query;
-    //}
-
-
 
 }

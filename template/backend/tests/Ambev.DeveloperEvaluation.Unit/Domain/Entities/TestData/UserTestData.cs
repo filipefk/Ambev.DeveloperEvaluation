@@ -150,4 +150,18 @@ public static class UserTestData
     {
         return new Faker().Random.String2(51);
     }
+
+    /// <summary>
+    /// Generates a username with a specified size.
+    /// The generated username will:
+    /// - Be exactly the specified number of characters
+    /// - Contain random alphanumeric characters
+    /// </summary>
+    /// <param name="usernameLength">The desired length of the username.</param>
+    /// <returns>A username with the specified length.</returns>
+    public static string GenerateUserNameWithLength(int usernameLength)
+    {
+        return new Faker().Random.String2(usernameLength);
+    }
+
 }

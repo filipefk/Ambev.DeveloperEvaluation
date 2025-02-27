@@ -1,5 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
-using Ambev.DeveloperEvaluation.Domain.Validation;
+﻿using Ambev.DeveloperEvaluation.Domain.Validation;
 using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser;
@@ -27,7 +26,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         RuleFor(user => user.Username).SetValidator(new UserNameValidator());
         RuleFor(user => user.Password).SetValidator(new PasswordValidator());
         RuleFor(user => user.Phone).SetValidator(new PhoneValidator());
-        RuleFor(user => user.Status).NotEqual(UserStatus.Unknown).WithMessage("'Status' cannot be 'Unknown'");
-        RuleFor(user => user.Role).NotEqual(UserRole.None).WithMessage("'Role' cannot be 'None'");
+        RuleFor(user => user.Status).SetValidator(new EnumStatusValidator());
+        RuleFor(user => user.Role).SetValidator(new EnumRoleValidator());
     }
 }
