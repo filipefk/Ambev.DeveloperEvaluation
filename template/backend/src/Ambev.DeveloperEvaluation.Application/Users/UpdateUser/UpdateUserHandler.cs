@@ -19,7 +19,6 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UpdateUserRe
     /// <param name="userRepository">The user repository</param>
     /// <param name="unitOfWork">The UnitOfWork instance</param>
     /// <param name="mapper">The AutoMapper instance</param>
-    /// <param name="validator">The validator for CreateUserCommand</param>
     public UpdateUserHandler(
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,

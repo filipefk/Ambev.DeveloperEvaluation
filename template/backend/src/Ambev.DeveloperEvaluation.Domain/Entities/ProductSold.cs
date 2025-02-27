@@ -36,7 +36,7 @@ public class ProductSold : BaseEntity
     [MaxLength(100)]
     public string Category { get; set; } = string.Empty;
 
-    public Sale Sale { get; set; }
+    public required Sale Sale { get; set; }
 
-    public Product Product { get; set; }
+    public required Product Product { get; set; }
 }

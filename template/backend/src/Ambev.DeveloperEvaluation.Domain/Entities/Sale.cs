@@ -30,7 +30,7 @@ public class Sale : BaseEntity
     [Required]
     public bool Canceled { get; set; } = false;
 
-    public User User { get; set; }
+    public required User User { get; set; }
 
-    public Branch Branch { get; set; }
+    public required Branch Branch { get; set; }
 }

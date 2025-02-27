@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Enums;
 using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.Domain.Validation;
+namespace Ambev.DeveloperEvaluation.Domain.Validation.Users;
 
 public class EnumStatusValidator : AbstractValidator<UserStatus>
 {

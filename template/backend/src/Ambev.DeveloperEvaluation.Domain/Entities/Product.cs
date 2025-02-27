@@ -30,5 +30,5 @@ public class Product : BaseEntity
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Rating Rating { get; set; }
+    public required Rating Rating { get; set; }
 }

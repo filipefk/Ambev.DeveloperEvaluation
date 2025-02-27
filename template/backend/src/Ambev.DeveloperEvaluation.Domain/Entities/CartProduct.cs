@@ -21,7 +21,7 @@ public class CartProduct : BaseEntity
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Product Product { get; set; }
+    public required Product Product { get; set; }
 
-    public Cart Cart { get; set; }
+    public required Cart Cart { get; set; }
 }
