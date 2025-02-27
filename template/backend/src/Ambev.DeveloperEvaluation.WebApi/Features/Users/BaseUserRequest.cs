@@ -4,7 +4,7 @@ public class BaseUserRequest
     /// <summary>
     /// Gets or sets the username. Must be unique and contain only valid characters.
     /// </summary>
-    public string Username { get; set; } = string.Empty;
+    public string UserName { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the password. Must meet security requirements.
