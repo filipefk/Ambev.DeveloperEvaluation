@@ -58,7 +58,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UpdateUserRe
         user.Password = _passwordHasher.HashPassword(command.Password);
         user.UpdatedAt = DateTime.UtcNow;
 
-        await _unitOfWork.Commit();
+        await _unitOfWork.CommitAsync(cancellationToken);
 
         var result = _mapper.Map<UpdateUserResult>(user);
         return result;
