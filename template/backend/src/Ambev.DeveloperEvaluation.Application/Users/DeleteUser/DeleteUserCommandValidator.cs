@@ -1,4 +1,4 @@
-using Ambev.DeveloperEvaluation.Domain.Validation;
+using Ambev.DeveloperEvaluation.Domain.Validation.Users;
 using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
