@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using MediatR;
-using FluentValidation;
-using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
+using AutoMapper;
+using FluentValidation;
+using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 
@@ -13,6 +13,7 @@ namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 public class CreateUserHandler : IRequestHandler<CreateUserCommand, CreateUserResult>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IPasswordHasher _passwordHasher;
 
@@ -22,11 +23,16 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, CreateUserRe
     /// <param name="userRepository">The user repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
     /// <param name="validator">The validator for CreateUserCommand</param>
-    public CreateUserHandler(IUserRepository userRepository, IMapper mapper, IPasswordHasher passwordHasher)
+    public CreateUserHandler(
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IPasswordHasher passwordHasher)
     {
         _userRepository = userRepository;
         _mapper = mapper;
         _passwordHasher = passwordHasher;
+        _unitOfWork = unitOfWork;
     }
 
     /// <summary>
@@ -51,6 +57,9 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, CreateUserRe
         user.Password = _passwordHasher.HashPassword(command.Password);
 
         var createdUser = await _userRepository.CreateAsync(user, cancellationToken);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+
         var result = _mapper.Map<CreateUserResult>(createdUser);
         return result;
     }

@@ -1,3 +1,4 @@
+using Ambev.DeveloperEvaluation.Domain.Validation;
 using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
@@ -5,15 +6,13 @@ namespace Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 /// <summary>
 /// Validator for DeleteUserCommand
 /// </summary>
-public class DeleteUserValidator : AbstractValidator<DeleteUserCommand>
+public class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
 {
     /// <summary>
     /// Initializes validation rules for DeleteUserCommand
     /// </summary>
-    public DeleteUserValidator()
+    public DeleteUserCommandValidator()
     {
-        RuleFor(x => x.Id)
-            .NotEmpty()
-            .WithMessage("User ID is required");
+        RuleFor(user => user.Id).SetValidator(new UserIdValidator());
     }
 }
