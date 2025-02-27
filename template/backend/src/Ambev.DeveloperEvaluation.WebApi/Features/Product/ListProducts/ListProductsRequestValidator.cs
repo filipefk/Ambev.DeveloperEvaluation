@@ -6,6 +6,7 @@ public class ListProductsRequestValidator : AbstractValidator<ListProductsReques
 {
     public ListProductsRequestValidator()
     {
-
+        RuleFor(command => command.Page).GreaterThan(0).WithMessage("Page must be greater than 0");
+        RuleFor(command => command.Size).GreaterThan(0).WithMessage("Size must be greater than 0");
     }
 }
