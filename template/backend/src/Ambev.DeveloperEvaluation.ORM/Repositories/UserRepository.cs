@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Domain.Common;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,7 +30,6 @@ public class UserRepository : IUserRepository
     public async Task<User> CreateAsync(User user, CancellationToken cancellationToken = default)
     {
         await _context.Users.AddAsync(user, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
         return user;
     }
 
@@ -41,7 +41,7 @@ public class UserRepository : IUserRepository
     /// <returns>The user if found, null otherwise</returns>
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Users.FirstOrDefaultAsync(o=> o.Id == id, cancellationToken);
+        return await _context.Users.FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
     }
 
     /// <summary>
@@ -69,7 +69,32 @@ public class UserRepository : IUserRepository
             return false;
 
         _context.Users.Remove(user);
-        await _context.SaveChangesAsync(cancellationToken);
+
         return true;
     }
+
+    public async Task<PaginatedResult<User>?> GetAllAsync(int currentPage, int pageSize, string order = null!, CancellationToken cancellationToken = default)
+    {
+        var totalCount = await _context.Users.CountAsync(cancellationToken);
+
+        if (totalCount == 0)
+            return null;
+
+        var query = _context
+            .Users
+            .AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(order))
+            query = QueryableOrderer.ApplyOrdering(query, order);
+
+        var users = await query
+            .Skip((currentPage - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        var results = new PaginatedResult<User>(users, currentPage, pageSize, totalCount);
+
+        return results;
+    }
+
 }
