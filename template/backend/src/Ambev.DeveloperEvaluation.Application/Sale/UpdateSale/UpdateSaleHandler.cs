@@ -3,7 +3,6 @@ using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 
 namespace Ambev.DeveloperEvaluation.Application.Sale.UpdateSale;
 
@@ -14,12 +13,12 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IConfiguration _configuration;
 
     /// <summary>
     /// Initializes a new instance of CreateSaleHandler
     /// </summary>
     /// <param name="saleRepository">The sale repository</param>
+    /// <param name="branchRepository">The branch repository</param>
     /// <param name="unitOfWork">The UnitOfWork instance</param>
     /// <param name="mapper">The AutoMapper instance</param>
     public UpdateSaleHandler(
@@ -27,15 +26,13 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
         IBranchRepository branchRepository,
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
-        IMapper mapper,
-        IConfiguration configuration)
+        IMapper mapper)
     {
         _saleRepository = saleRepository;
         _branchRepository = branchRepository;
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _configuration = configuration;
     }
 
     /// <summary>
@@ -46,9 +43,6 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
     /// <returns>The update sale details</returns>
     public async Task<UpdateSaleResult> Handle(UpdateSaleCommand command, CancellationToken cancellationToken)
     {
-        var saleMaximumQuantityPerProduct = _configuration.GetValue<int?>("Settings:SaleMaximumQuantityPerProduct");
-        if (!saleMaximumQuantityPerProduct.HasValue || saleMaximumQuantityPerProduct.Value < 0)
-            saleMaximumQuantityPerProduct = 0;
 
         var validator = new UpdateSaleCommandValidator();
         var validationResult = await validator.ValidateAsync(command, cancellationToken);

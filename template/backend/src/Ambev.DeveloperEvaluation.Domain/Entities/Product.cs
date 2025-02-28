@@ -6,7 +6,6 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
 public class Product : BaseEntity
 {
-    [Required]
     [MaxLength(100)]
     public string Title { get; set; } = string.Empty;
 

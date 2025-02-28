@@ -47,7 +47,6 @@ public class CreateCartHandlerTests
         {
             Id = Guid.NewGuid(),
             Date = command.Date,
-            User = null!,
             Products = command.Products.Select(p => new CartProduct
             {
                 ProductId = p.ProductId,
