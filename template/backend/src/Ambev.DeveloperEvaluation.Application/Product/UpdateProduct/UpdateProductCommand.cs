@@ -2,14 +2,7 @@
 
 namespace Ambev.DeveloperEvaluation.Application.Product.UpdateProduct;
 
-public class UpdateProductCommand : IRequest<UpdateProductResult>
+public class UpdateProductCommand : BaseProductCommand, IRequest<UpdateProductResult>
 {
     public required Guid Id { get; set; }
-    public string Title { get; set; } = string.Empty;
-    public decimal Price { get; set; }
-    public string Description { get; set; } = string.Empty;
-    public string Category { get; set; } = string.Empty;
-    public string Image { get; set; } = string.Empty;
-    public required BaseRatingApp Rating { get; set; }
-
 }
