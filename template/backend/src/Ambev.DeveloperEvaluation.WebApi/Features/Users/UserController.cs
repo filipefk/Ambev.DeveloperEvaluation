@@ -20,7 +20,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Users;
 /// Controller for managing user operations
 /// </summary>
 [Authorize]
-public class UsersController : BaseController
+public class UserController : BaseController
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
@@ -30,7 +30,7 @@ public class UsersController : BaseController
     /// </summary>
     /// <param name="mediator">The mediator instance</param>
     /// <param name="mapper">The AutoMapper instance</param>
-    public UsersController(IMediator mediator, IMapper mapper)
+    public UserController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;
