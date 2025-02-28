@@ -8,9 +8,9 @@ public class ListCartsResult
     public int PageSize { get; private set; }
     public int TotalCount { get; private set; }
 
-    public ListCartsResult(List<BaseCartResult> products, int currentPage, int totalPages, int pageSize, int totalCount)
+    public ListCartsResult(List<BaseCartResult> carts, int currentPage, int totalPages, int pageSize, int totalCount)
     {
-        Carts = products;
+        Carts = carts;
         CurrentPage = currentPage;
         TotalPages = totalPages;
         PageSize = pageSize;

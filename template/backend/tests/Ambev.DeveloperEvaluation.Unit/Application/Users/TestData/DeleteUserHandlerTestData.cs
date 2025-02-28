@@ -1,6 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 
-namespace Ambev.DeveloperEvaluation.Unit.Application.TestData;
+namespace Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 
 public static class DeleteUserHandlerTestData
 {

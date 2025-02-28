@@ -52,6 +52,7 @@ public class CreateCartHandler : IRequestHandler<CreateCartCommand, CreateCartRe
             {
                 existingCart.AddProduct(_mapper.Map<Domain.Entities.CartProduct>(product));
             }
+            existingCart.UpdatedAt = DateTime.UtcNow;
             result = _mapper.Map<CreateCartResult>(existingCart);
         }
         else

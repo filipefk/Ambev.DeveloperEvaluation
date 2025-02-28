@@ -2,13 +2,13 @@ using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.Unit.Domain;
+using Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Unit.Application;
+namespace Ambev.DeveloperEvaluation.Unit.Application.Users;
 
 /// <summary>
 /// Contains unit tests for the <see cref="CreateUserHandler"/> class.
@@ -29,7 +29,7 @@ public class CreateUserHandlerTests
     {
         _userRepository = Substitute.For<IUserRepository>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
-        _mapper = Substitute.For<IMapper>();
+        _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<CreateUserProfile>()));
         _passwordHasher = Substitute.For<IPasswordHasher>();
         _handler = new CreateUserHandler(_userRepository, _unitOfWork, _mapper, _passwordHasher);
     }
@@ -52,20 +52,6 @@ public class CreateUserHandlerTests
             Status = command.Status,
             Role = command.Role
         };
-
-        var result = new CreateUserResult
-        {
-            Id = user.Id,
-            UserName = command.Username,
-            Email = command.Email,
-            Phone = command.Phone,
-            Status = command.Status.ToString(),
-            Role = command.Role.ToString(),
-        };
-
-
-        _mapper.Map<User>(command).Returns(user);
-        _mapper.Map<CreateUserResult>(user).Returns(result);
 
         _userRepository.CreateAsync(Arg.Any<User>(), Arg.Any<CancellationToken>())
             .Returns(user);
@@ -123,7 +109,6 @@ public class CreateUserHandlerTests
             Role = command.Role
         };
 
-        _mapper.Map<User>(command).Returns(user);
         _userRepository.CreateAsync(Arg.Any<User>(), Arg.Any<CancellationToken>())
             .Returns(user);
         _passwordHasher.HashPassword(originalPassword).Returns(hashedPassword);
@@ -140,42 +125,4 @@ public class CreateUserHandlerTests
 
     }
 
-    /// <summary>
-    /// Tests that the mapper is called with the correct command.
-    /// </summary>
-    [Fact(DisplayName = "Given valid command When handling Then maps command to user entity")]
-    public async Task Handle_ValidRequest_MapsCommandToUser()
-    {
-        // Given
-        var command = CreateUserHandlerTestData.GenerateValidCommand();
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            Username = command.Username,
-            Password = command.Password,
-            Email = command.Email,
-            Phone = command.Phone,
-            Status = command.Status,
-            Role = command.Role
-        };
-
-        _mapper.Map<User>(command).Returns(user);
-        _userRepository.CreateAsync(Arg.Any<User>(), Arg.Any<CancellationToken>())
-            .Returns(user);
-        _passwordHasher.HashPassword(Arg.Any<string>()).Returns("hashedPassword");
-
-        // When
-        await _handler.Handle(command, CancellationToken.None);
-
-        // Then
-        _mapper.Received(1).Map<User>(Arg.Is<CreateUserCommand>(c =>
-            c.Username == command.Username &&
-            c.Email == command.Email &&
-            c.Phone == command.Phone &&
-            c.Status == command.Status &&
-            c.Role == command.Role));
-
-        await _userRepository.Received(1).CreateAsync(Arg.Any<User>(), Arg.Any<CancellationToken>());
-        await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
-    }
 }

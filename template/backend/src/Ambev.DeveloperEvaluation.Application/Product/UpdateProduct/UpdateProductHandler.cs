@@ -1,5 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Common.Security;
-using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -11,7 +10,6 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
     private readonly IProductRepository _productRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IPasswordHasher _passwordHasher;
 
     /// <summary>
     /// Initializes a new instance of CreateProductHandler
@@ -22,13 +20,11 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
     public UpdateProductHandler(
         IProductRepository productRepository,
         IUnitOfWork unitOfWork,
-        IMapper mapper,
-        IPasswordHasher passwordHasher)
+        IMapper mapper)
     {
         _productRepository = productRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _passwordHasher = passwordHasher;
     }
 
     /// <summary>

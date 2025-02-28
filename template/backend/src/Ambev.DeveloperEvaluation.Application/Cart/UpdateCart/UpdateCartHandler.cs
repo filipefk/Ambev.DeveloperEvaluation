@@ -1,5 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Common.Security;
-using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -11,7 +10,6 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
     private readonly ICartRepository _cartRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IPasswordHasher _passwordHasher;
 
     /// <summary>
     /// Initializes a new instance of CreateCartHandler
@@ -22,13 +20,11 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
     public UpdateCartHandler(
         ICartRepository cartRepository,
         IUnitOfWork unitOfWork,
-        IMapper mapper,
-        IPasswordHasher passwordHasher)
+        IMapper mapper)
     {
         _cartRepository = cartRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _passwordHasher = passwordHasher;
     }
 
     /// <summary>
