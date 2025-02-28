@@ -1,5 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Enums;
-using Ambev.DeveloperEvaluation.Domain.Validation;
+using Ambev.DeveloperEvaluation.Domain.Validation.Users;
 using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.UpdateUser;
@@ -21,7 +21,7 @@ public class UpdateUserRequestValidator : AbstractValidator<UpdateUserRequest>
     public UpdateUserRequestValidator()
     {
         RuleFor(user => user.Email).SetValidator(new EmailValidator());
-        RuleFor(user => user.Username).SetValidator(new UserNameValidator());
+        RuleFor(user => user.UserName).SetValidator(new UserNameValidator());
         RuleFor(user => user.Password).SetValidator(new PasswordValidator());
         RuleFor(user => user.Phone).SetValidator(new PhoneValidator());
         RuleFor(user => user.Status)
