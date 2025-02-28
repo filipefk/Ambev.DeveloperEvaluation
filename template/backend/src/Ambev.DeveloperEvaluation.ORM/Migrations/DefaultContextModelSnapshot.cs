@@ -227,6 +227,9 @@ partial class DefaultContextModelSnapshot : ModelSnapshot
                 b.Property<decimal>("SaleTotal")
                     .HasColumnType("decimal(18,2)");
 
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("timestamp with time zone");
+
                 b.Property<Guid>("UserId")
                     .HasColumnType("uuid");
 
@@ -236,7 +239,7 @@ partial class DefaultContextModelSnapshot : ModelSnapshot
 
                 b.HasIndex("UserId");
 
-                b.ToTable("Sale");
+                b.ToTable("Sales");
             });
 
         modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.SaleDiscount", b =>

@@ -20,6 +20,8 @@ public class Sale : BaseEntity
     [Column(TypeName = "date")]
     public DateTime Date { get; set; } = DateTime.UtcNow;
 
+    public DateTime? UpdatedAt { get; set; }
+
     public ICollection<ProductSold> Products { get; set; } = [];
 
     public ICollection<SaleDiscount> Discounts { get; set; } = [];
