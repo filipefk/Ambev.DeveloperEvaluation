@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace Ambev.DeveloperEvaluation.Application.Cart;
+﻿namespace Ambev.DeveloperEvaluation.Application.Cart;
 
 public class BaseCartProductApp
 {

@@ -1,6 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 
-namespace Ambev.DeveloperEvaluation.Unit.Application.TestData;
+namespace Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 
 public static class GetUserHandlerTestData
 {

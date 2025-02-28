@@ -25,6 +25,7 @@ public class Cart : BaseEntity
         if (existingProduct != null)
         {
             existingProduct.Quantity += product.Quantity;
+            existingProduct.UpdatedAt = DateTime.UtcNow;
         }
         else
         {
