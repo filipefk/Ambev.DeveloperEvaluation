@@ -2,7 +2,6 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.ORM.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData;
 using AutoMapper;
 using FluentAssertions;
@@ -173,7 +172,7 @@ public class UpdateSaleHandlerTests
 
         // Then
         await act.Should().ThrowAsync<NotFoundException>();
-        
+
         await _saleRepository.Received(1).GetByIdAsync(command.Id, CancellationToken.None);
         await _branchRepository.Received(1).GetByIdAsync(command.BranchId, CancellationToken.None);
         await _userRepository.Received(1).GetByIdAsync(command.UserId, CancellationToken.None);

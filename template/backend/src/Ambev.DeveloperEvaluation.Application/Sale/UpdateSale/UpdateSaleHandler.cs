@@ -3,7 +3,6 @@ using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 
 namespace Ambev.DeveloperEvaluation.Application.Sale.UpdateSale;
 

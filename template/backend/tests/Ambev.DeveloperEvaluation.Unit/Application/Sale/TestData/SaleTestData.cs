@@ -1,7 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Bogus;
-using System;
-using System.Collections.Generic;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData
 {

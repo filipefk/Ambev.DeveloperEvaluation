@@ -1,8 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sale;
 using Ambev.DeveloperEvaluation.Application.Sale.UpdateSale;
 using Bogus;
-using System;
-using System.Collections.Generic;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData
 {

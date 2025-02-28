@@ -1,4 +1,3 @@
-using Ambev.DeveloperEvaluation.Application.Sale;
 using Ambev.DeveloperEvaluation.Application.Sale.CreateSale;
 using Bogus;
 

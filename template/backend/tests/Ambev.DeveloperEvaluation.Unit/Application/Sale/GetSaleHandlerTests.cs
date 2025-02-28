@@ -42,7 +42,7 @@ public class GetSaleHandlerTests
         // Then
         getSaleResult.Should().NotBeNull();
         getSaleResult.Id.Should().Be(sale.Id);
-        
+
         await _saleRepository.Received(1).GetByIdAsync(command.Id, CancellationToken.None);
     }
 

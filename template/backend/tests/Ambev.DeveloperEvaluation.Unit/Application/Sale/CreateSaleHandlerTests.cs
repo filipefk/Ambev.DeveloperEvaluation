@@ -1,4 +1,3 @@
-using Ambev.DeveloperEvaluation.Application.Sale;
 using Ambev.DeveloperEvaluation.Application.Sale.CreateSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Exceptions;
