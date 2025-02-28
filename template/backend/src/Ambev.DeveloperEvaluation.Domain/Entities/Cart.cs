@@ -1,7 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Common;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.ConstrainedExecution;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
 

@@ -1,12 +1,9 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Validation;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Serilog;
-using Ambev.DeveloperEvaluation.Domain.Exceptions;
+using System.Text.Json;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Middleware;
 
@@ -59,7 +56,7 @@ public class ExceptionMiddleware
 
     private static Task HandleValidationExceptionAsync(HttpContext context, ValidationException exception)
     {
-        
+
         context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
         var response = new ApiResponse
