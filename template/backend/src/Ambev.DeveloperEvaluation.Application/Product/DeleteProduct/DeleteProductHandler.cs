@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Exceptions;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using FluentValidation;
 using MediatR;
 
@@ -40,7 +41,7 @@ public class DeleteProductHandler : IRequestHandler<DeleteProductCommand, Delete
         await _unitOfWork.CommitAsync(cancellationToken);
 
         if (!success)
-            throw new KeyNotFoundException($"Product with ID {command.Id} not found");
+            throw new NotFoundException($"Product with ID {command.Id} not found");
 
         return new DeleteProductResult { Success = true };
     }

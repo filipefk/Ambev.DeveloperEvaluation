@@ -1,4 +1,5 @@
 using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Specifications;
 using MediatR;
@@ -27,13 +28,13 @@ public class AuthenticateUserHandler : IRequestHandler<AuthenticateUserCommand, 
 
         if (user == null || !_passwordHasher.VerifyPassword(request.Password, user.Password))
         {
-            throw new UnauthorizedAccessException("Invalid credentials");
+            throw new UnauthorizedException("Invalid credentials");
         }
 
         var activeUserSpec = new ActiveUserSpecification();
         if (!activeUserSpec.IsSatisfiedBy(user))
         {
-            throw new UnauthorizedAccessException("User is not active");
+            throw new UnauthorizedException("User is not active");
         }
 
         var token = _jwtTokenGenerator.GenerateToken(user);

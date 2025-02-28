@@ -1,3 +1,4 @@
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using FluentValidation;
 using MediatR;
@@ -43,7 +44,7 @@ public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, DeleteUserRe
         await _unitOfWork.CommitAsync(cancellationToken);
 
         if (!success)
-            throw new KeyNotFoundException($"User with ID {command.Id} not found");
+            throw new NotFoundException($"User with ID {command.Id} not found");
 
         return new DeleteUserResult { Success = true };
     }
