@@ -99,6 +99,8 @@ public class Program
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseMiddleware<TokenValidationMiddleware>();
+
             app.UseBasicHealthChecks();
 
             app.MapControllers();
