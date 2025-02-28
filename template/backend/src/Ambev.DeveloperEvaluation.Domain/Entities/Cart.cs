@@ -57,4 +57,19 @@ public class Cart : BaseEntity
             Products = productDictionary.Values.ToList();
         }
     }
+
+    public bool ExceedsMaximumQuantityPerProduct(int limit)
+    {
+        if (limit == 0)
+            return false;
+
+        foreach (var product in Products)
+        {
+            if (product.Quantity > limit)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

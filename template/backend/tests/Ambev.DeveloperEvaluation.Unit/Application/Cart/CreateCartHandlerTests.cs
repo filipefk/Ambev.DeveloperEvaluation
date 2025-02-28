@@ -5,6 +5,7 @@ using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Cart.TestData;
 using AutoMapper;
 using FluentAssertions;
+using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Xunit;
 
@@ -18,6 +19,7 @@ public class CreateCartHandlerTests
     private readonly ICartRepository _cartRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IConfiguration _configuration;
     private readonly CreateCartHandler _handler;
 
     /// <summary>
@@ -29,7 +31,8 @@ public class CreateCartHandlerTests
         _cartRepository = Substitute.For<ICartRepository>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<CreateCartProfile>()));
-        _handler = new CreateCartHandler(_cartRepository, _unitOfWork, _mapper);
+        _configuration = Substitute.For<IConfiguration>();
+        _handler = new CreateCartHandler(_cartRepository, _unitOfWork, _mapper, _configuration);
     }
 
     /// <summary>
@@ -65,7 +68,6 @@ public class CreateCartHandlerTests
             }).ToList(),
         };
 
-
         _cartRepository.CreateAsync(Arg.Any<DeveloperEvaluation.Domain.Entities.Cart>(), Arg.Any<CancellationToken>())
             .Returns(cart);
 
@@ -99,4 +101,37 @@ public class CreateCartHandlerTests
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
     }
 
+    /// <summary>
+    /// Tests that an a valid cart creation request with product quantity exceeding the limit throws a validation exception.
+    /// </summary>
+    //[Fact(DisplayName = "Given valid cart data with product quantity exceeding the limit When creating cart Then throws validation exception")]
+    //public async Task Handle_Valid_Request_With_Product_Quantity_Exceeding_Throws_ValidationException()
+    //{
+    //    // Given
+    //    var command = CreateCartHandlerTestData.GenerateValidCommand();
+    //    var cart = new DeveloperEvaluation.Domain.Entities.Cart
+    //    {
+    //        Id = Guid.NewGuid(),
+    //        Date = command.Date,
+    //        User = null!,
+    //        Products = command.Products.Select(p => new CartProduct
+    //        {
+    //            ProductId = p.ProductId,
+    //            Quantity = 21,
+    //            Product = null!,
+    //            Cart = null!
+    //        }).ToList(),
+    //    };
+
+    //    _configuration.GetValue<int?>("Settings:CartMaximumQuantityPerProduct").Returns(20);
+
+    //    // When
+    //    var act = () => _handler.Handle(command, CancellationToken.None);
+
+    //    // Then
+    //    await act.Should().ThrowAsync<FluentValidation.ValidationException>();
+
+    //    await _cartRepository.Received(0).CreateAsync(Arg.Any<DeveloperEvaluation.Domain.Entities.Cart>(), Arg.Any<CancellationToken>());
+    //    await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
+    //}
 }
