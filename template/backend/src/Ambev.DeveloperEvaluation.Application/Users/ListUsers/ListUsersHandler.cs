@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Exceptions;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -29,7 +30,7 @@ public class ListUsersHandler : IRequestHandler<ListUsersCommand, ListUsersResul
         var paginatedResult = await _userRepository.GetAllAsync(command.Page, command.Size, command.Order!, cancellationToken);
 
         if (paginatedResult == null)
-            throw new InvalidOperationException("No users found");
+            throw new NotFoundException("No users found");
 
         var baseUsersResult = _mapper.Map<List<BaseUserResult>>(paginatedResult.Results);
 

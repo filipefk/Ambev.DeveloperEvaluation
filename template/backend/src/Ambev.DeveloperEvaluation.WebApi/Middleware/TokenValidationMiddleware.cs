@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -26,9 +27,7 @@ public class TokenValidationMiddleware
                 var user = await userRepository.GetByIdAsync(userId);
                 if (user == null || user.Status != UserStatus.Active)
                 {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsync("User is not active");
-                    return;
+                    throw new UnauthorizedException("User is not active");
                 }
             }
         }

@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Cart.GetCart;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Cart.TestData;
 using AutoMapper;
@@ -69,8 +70,8 @@ public class GetCartHandlerTests
         await act.Should().ThrowAsync<FluentValidation.ValidationException>();
     }
 
-    [Fact(DisplayName = "Given a valid command When cart not exists When get cart Then throws a KeyNotFoundException exception")]
-    public async Task Handle_ValidCommand_With_CartID_Not_Found_Returns_KeyNotFoundException_Exception()
+    [Fact(DisplayName = "Given a valid command When cart not exists When get cart Then throws a NotFoundException")]
+    public async Task Handle_ValidCommand_With_CartID_Not_Found_Returns_NotFoundException()
     {
         // Given
         var command = GetCartHandlerTestData.GenerateValidCommand();
@@ -79,6 +80,6 @@ public class GetCartHandlerTests
         var act = () => _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await act.Should().ThrowAsync<KeyNotFoundException>();
+        await act.Should().ThrowAsync<NotFoundException>();
     }
 }

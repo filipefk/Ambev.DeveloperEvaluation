@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Cart.UpdateCart;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Cart.TestData;
 using AutoMapper;
@@ -77,8 +78,8 @@ public class UpdateCartHandlerTests
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
     }
 
-    [Fact(DisplayName = "Given valid cart data When updating cart When cart not exists Then throws InvalidOperationException")]
-    public async Task Handle_Valid_Command_Cart_Not_Exists_Throws_InvalidOperationException()
+    [Fact(DisplayName = "Given valid cart data When updating cart When cart not exists Then throws NotFoundException")]
+    public async Task Handle_Valid_Command_Cart_Not_Exists_Throws_NotFoundException()
     {
         // Given
         var command = UpdateCartHandlerTestData.GenerateValidCommand();
@@ -92,7 +93,7 @@ public class UpdateCartHandlerTests
         var act = () => _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await act.Should().ThrowAsync<InvalidOperationException>();
+        await act.Should().ThrowAsync<NotFoundException>();
 
         await _cartRepository.Received(1).GetByIdAsync(command.Id, CancellationToken.None);
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());

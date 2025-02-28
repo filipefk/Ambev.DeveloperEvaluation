@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.GetUser;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
@@ -64,8 +65,8 @@ public class GetUserHandlerTests
         await act.Should().ThrowAsync<FluentValidation.ValidationException>();
     }
 
-    [Fact(DisplayName = "Given a valid command When user not exists When get user Then throws a KeyNotFoundException exception")]
-    public async Task Handle_ValidCommand_With_UserID_Not_Found_Returns_KeyNotFoundException_Exception()
+    [Fact(DisplayName = "Given a valid command When user not exists When get user Then throws a NotFoundException")]
+    public async Task Handle_ValidCommand_With_UserID_Not_Found_Returns_NotFoundException()
     {
         // Given
         var command = GetUserHandlerTestData.GenerateValidCommand();
@@ -74,6 +75,6 @@ public class GetUserHandlerTests
         var act = () => _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await act.Should().ThrowAsync<KeyNotFoundException>();
+        await act.Should().ThrowAsync<NotFoundException>();
     }
 }

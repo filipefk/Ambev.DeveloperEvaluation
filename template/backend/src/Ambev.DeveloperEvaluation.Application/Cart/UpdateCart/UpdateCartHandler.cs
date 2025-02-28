@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Exceptions;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -43,7 +44,7 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
 
         var cart = await _cartRepository.GetByIdAsync(command.Id, cancellationToken);
         if (cart == null)
-            throw new InvalidOperationException($"Cart with id {command.Id} does not exists");
+            throw new NotFoundException($"Cart with id {command.Id} does not exists");
 
         _mapper.Map(command, cart);
 
