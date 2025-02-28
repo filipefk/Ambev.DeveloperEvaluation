@@ -6,10 +6,8 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
 public class Cart : BaseEntity
 {
-    [Required]
     public Guid UserId { get; set; }
 
-    [Required]
     [Column(TypeName = "date")]
     public DateTime Date { get; set; } = DateTime.UtcNow;
 
@@ -17,7 +15,7 @@ public class Cart : BaseEntity
 
     public DateTime? UpdatedAt { get; set; }
 
-    public required User User { get; set; }
+    public User User { get; set; } = null!;
 
     public void AddProduct(CartProduct product)
     {
