@@ -25,7 +25,7 @@ public class ProductRepository : IProductRepository
         return await _context
             .Products
             .Include(product => product.Rating)
-            .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+            .FirstOrDefaultAsync(product => product.Id == id, cancellationToken);
     }
 
     public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
