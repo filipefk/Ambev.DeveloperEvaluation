@@ -10,11 +10,11 @@ using Ambev.DeveloperEvaluation.Domain.Exceptions;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Middleware;
 
-public class ValidationExceptionMiddleware
+public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
 
-    public ValidationExceptionMiddleware(RequestDelegate next)
+    public ExceptionMiddleware(RequestDelegate next)
     {
         _next = next;
     }

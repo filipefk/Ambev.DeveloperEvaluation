@@ -1,6 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Common;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.ConstrainedExecution;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
@@ -56,5 +57,20 @@ public class Cart : BaseEntity
 
             Products = productDictionary.Values.ToList();
         }
+    }
+
+    public bool ExceedsMaximumQuantityPerProduct(int limit)
+    {
+        if (limit == 0)
+            return false;
+
+        foreach (var product in Products)
+        {
+            if (product.Quantity > limit)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -4,6 +4,7 @@ using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Cart.TestData;
 using AutoMapper;
 using FluentAssertions;
+using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Xunit;
 
@@ -14,6 +15,7 @@ public class UpdateCartHandlerTests
     private readonly ICartRepository _cartRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IConfiguration _configuration;
     private readonly UpdateCartHandler _handler;
 
     public UpdateCartHandlerTests()
@@ -21,7 +23,8 @@ public class UpdateCartHandlerTests
         _cartRepository = Substitute.For<ICartRepository>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<UpdateCartProfile>()));
-        _handler = new UpdateCartHandler(_cartRepository, _unitOfWork, _mapper);
+        _configuration = Substitute.For<IConfiguration>();
+        _handler = new UpdateCartHandler(_cartRepository, _unitOfWork, _mapper, _configuration);
     }
 
     [Fact(DisplayName = "Given valid cart data When updating cart Then returns success response")]
