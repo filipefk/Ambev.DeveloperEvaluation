@@ -31,10 +31,16 @@
 
 ## Utilizando a API
 **A API está documentada pelo Swagger e o primeiro endpoint a ser executado é o de autenticação (Auth) para receber um token**
+
 **O token recebido deve ser adicionado pelo botão "Authorize" que está a direita no topo da página do Swagger**
+
 **Lembre de incluir a palavra "Bearer " e um espaço antes do token conforme está orientado na própria tela que aparece**
 `Examplo: 'Bearer 123abcde'`
+
 **A partir deste ponto, é possível executar o CRUD de todas as entidades da API.**
+
 **O banco de dados inicia vazio, por isso será necessário cadastrar os Produtos para depois poder criar um carrinho e uma venda. Em uma próxima versão, teremos o recurso de carga de dados automática para facilitar os testes**
+
 **Também não temos ainda endpoints para trazer indicadores de venda, mas é possível visualizar a listagem completa de vendas com os dados pertinentes**
+
 `Enjoi`
