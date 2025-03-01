@@ -7,7 +7,6 @@ public class Cart : BaseEntity
 {
     public Guid UserId { get; set; }
 
-    [Column(TypeName = "date")]
     public DateTime Date { get; set; } = DateTime.UtcNow;
 
     public ICollection<CartProduct> Products { get; set; } = [];
