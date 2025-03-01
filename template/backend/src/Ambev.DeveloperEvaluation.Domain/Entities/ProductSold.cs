@@ -1,42 +1,61 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Common;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
+/// <summary>
+/// Represents a product that has been sold.
+/// </summary>
 [Table("ProductsSold")]
 public class ProductSold : BaseEntity
 {
-    [Required]
+    /// <summary>
+    /// Gets or sets the sale ID associated with the sold product.
+    /// </summary>
     public Guid SaleId { get; set; }
 
-    [Required]
+    /// <summary>
+    /// Gets or sets the product ID.
+    /// </summary>
     public Guid ProductId { get; set; }
 
-    [Required]
-    [MaxLength(100)]
+    /// <summary>
+    /// Gets or sets the title of the product.
+    /// </summary>
     public string Title { get; set; } = string.Empty;
 
-    [Required]
-    [MaxLength(500)]
+    /// <summary>
+    /// Gets or sets the description of the product.
+    /// </summary>
     public string Description { get; set; } = string.Empty;
 
-    [Required]
+    /// <summary>
+    /// Gets or sets the quantity of the product sold.
+    /// </summary>
     public int Quantity { get; set; }
 
-    [Required]
-    [Column(TypeName = "decimal(18,2)")]
+    /// <summary>
+    /// Gets or sets the price of the product.
+    /// </summary>
     public decimal Price { get; set; }
 
-    [Required]
-    [Column(TypeName = "decimal(18,2)")]
+    /// <summary>
+    /// Gets or sets the sold price of the product.
+    /// </summary>
     public decimal SoldPrice { get; set; }
 
-    [Required]
-    [MaxLength(100)]
+    /// <summary>
+    /// Gets or sets the category of the product.
+    /// </summary>
     public string Category { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Gets or sets the sale associated with the sold product.
+    /// </summary>
     public required Sale Sale { get; set; }
 
+    /// <summary>
+    /// Gets or sets the product associated with the sold product.
+    /// </summary>
     public required Product Product { get; set; }
 }

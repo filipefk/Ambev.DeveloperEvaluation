@@ -1,7 +1,7 @@
 ﻿namespace Ambev.DeveloperEvaluation.Application.Cart.DeleteCart;
 
 /// <summary>
-/// Response model for DeleteUser operation
+/// Response model for DeleteCart operation
 /// </summary>
 public class DeleteCartResult
 {

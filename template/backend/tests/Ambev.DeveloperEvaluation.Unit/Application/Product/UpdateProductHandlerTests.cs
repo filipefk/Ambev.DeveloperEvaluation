@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Product.UpdateProduct;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Product.TestData;
 using Ambev.DeveloperEvaluation.Unit.Application.Products.TestData;
@@ -75,8 +76,8 @@ public class UpdateProductHandlerTests
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
     }
 
-    [Fact(DisplayName = "Given valid product data When updating product When product not exists Then throws InvalidOperationException")]
-    public async Task Handle_Valid_Command_Product_Not_Exists_Throws_InvalidOperationException()
+    [Fact(DisplayName = "Given valid product data When updating product When product not exists Then throws NotFoundException")]
+    public async Task Handle_Valid_Command_Product_Not_Exists_Throws_NotFoundException()
     {
         // Given
         var command = UpdateProductHandlerTestData.GenerateValidCommand();
@@ -90,7 +91,7 @@ public class UpdateProductHandlerTests
         var act = () => _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await act.Should().ThrowAsync<InvalidOperationException>();
+        await act.Should().ThrowAsync<NotFoundException>();
 
         await _productRepository.Received(1).GetByIdAsync(command.Id, CancellationToken.None);
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());

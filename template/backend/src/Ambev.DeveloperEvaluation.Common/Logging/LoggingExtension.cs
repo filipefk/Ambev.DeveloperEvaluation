@@ -30,7 +30,7 @@ public static class LoggingExtension
     static readonly Func<LogEvent, bool> _filterPredicate = exclusionPredicate =>
     {
 
-        if (exclusionPredicate.Level != LogEventLevel.Information) return true;
+        //if (exclusionPredicate.Level != LogEventLevel.Information) return true;
 
         exclusionPredicate.Properties.TryGetValue("StatusCode", out var statusCode);
         exclusionPredicate.Properties.TryGetValue("Path", out var path);
@@ -66,7 +66,18 @@ public static class LoggingExtension
             if (Debugger.IsAttached)
             {
                 loggerConfiguration.Enrich.WithProperty("DebuggerAttached", Debugger.IsAttached);
-                loggerConfiguration.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}", theme: SystemConsoleTheme.Colored);
+                loggerConfiguration
+                    .WriteTo.Console(
+                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}",
+                    theme: SystemConsoleTheme.Colored);
+
+                loggerConfiguration
+                    .WriteTo.File(
+                        "logs/log-.txt",
+                        rollingInterval: RollingInterval.Day,
+                        restrictedToMinimumLevel: LogEventLevel.Warning,
+                        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {SourceContext} {Message:lj}{NewLine}{Exception}"
+                    );
             }
             else
             {

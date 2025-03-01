@@ -1,7 +1,9 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Exceptions;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 
 namespace Ambev.DeveloperEvaluation.Application.Cart.UpdateCart;
 
@@ -10,6 +12,7 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
     private readonly ICartRepository _cartRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IConfiguration _configuration;
 
     /// <summary>
     /// Initializes a new instance of CreateCartHandler
@@ -20,11 +23,13 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
     public UpdateCartHandler(
         ICartRepository cartRepository,
         IUnitOfWork unitOfWork,
-        IMapper mapper)
+        IMapper mapper,
+        IConfiguration configuration)
     {
         _cartRepository = cartRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _configuration = configuration;
     }
 
     /// <summary>
@@ -35,6 +40,10 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
     /// <returns>The update cart details</returns>
     public async Task<UpdateCartResult> Handle(UpdateCartCommand command, CancellationToken cancellationToken)
     {
+        var cartMaximumQuantityPerProduct = _configuration.GetValue<int?>("Settings:CartMaximumQuantityPerProduct");
+        if (!cartMaximumQuantityPerProduct.HasValue || cartMaximumQuantityPerProduct.Value < 0)
+            cartMaximumQuantityPerProduct = 0;
+
         var validator = new UpdateCartCommandValidator();
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
 
@@ -43,9 +52,12 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
 
         var cart = await _cartRepository.GetByIdAsync(command.Id, cancellationToken);
         if (cart == null)
-            throw new InvalidOperationException($"Cart with id {command.Id} does not exists");
+            throw new NotFoundException($"Cart with id {command.Id} does not exists");
 
         _mapper.Map(command, cart);
+
+        if (cart.ExceedsMaximumQuantityPerProduct(cartMaximumQuantityPerProduct.Value))
+            throw new OperationInvalidException($"Maximum limit: {cartMaximumQuantityPerProduct} items per product");
 
         cart.UpdatedAt = DateTime.UtcNow;
 

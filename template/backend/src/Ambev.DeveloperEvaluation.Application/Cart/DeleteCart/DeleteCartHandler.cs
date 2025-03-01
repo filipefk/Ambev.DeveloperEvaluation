@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Exceptions;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using FluentValidation;
 using MediatR;
 
@@ -40,7 +41,7 @@ public class DeleteCartHandler : IRequestHandler<DeleteCartCommand, DeleteCartRe
         await _unitOfWork.CommitAsync(cancellationToken);
 
         if (!success)
-            throw new KeyNotFoundException($"Cart with ID {command.Id} not found");
+            throw new NotFoundException($"Cart with ID {command.Id} not found");
 
         return new DeleteCartResult { Success = true };
     }
