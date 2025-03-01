@@ -3,6 +3,7 @@ using Ambev.DeveloperEvaluation.Common.HealthChecks;
 using Ambev.DeveloperEvaluation.Common.Logging;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Common.Validation;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
@@ -104,6 +105,28 @@ public class Program
             app.UseBasicHealthChecks();
 
             app.MapControllers();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<DefaultContext>();
+
+                context.Database.Migrate();
+
+                if (!context.Users.Any())
+                {
+                    context.Users.Add(new User
+                    {
+                        Email = "Admin@taking.com.br",
+                        Username = "Admin da Taking",
+                        Password = "$2a$11$uVkKp9dH.FHvQeE1sszr.ud.9hYCFPMv58jQaWIkH2or8ArqF4XCG",
+                        Phone = "+551141026121",
+                        Status = Domain.Enums.UserStatus.Active,
+                        Role = Domain.Enums.UserRole.Admin
+                    });
+                    context.SaveChanges();
+                }
+            }
 
             app.Run();
         }

@@ -15,7 +15,7 @@ public partial class AddSaleEntities : Migration
             name: "Branches",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uuid", nullable: false),
+                Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                 Name = table.Column<string>(type: "text", nullable: false),
                 CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                 UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
@@ -29,7 +29,7 @@ public partial class AddSaleEntities : Migration
             name: "Carts",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uuid", nullable: false),
+                Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                 UserId = table.Column<Guid>(type: "uuid", nullable: false),
                 Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                 UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
@@ -49,7 +49,7 @@ public partial class AddSaleEntities : Migration
             name: "Products",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uuid", nullable: false),
+                Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                 Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                 Price = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                 Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
@@ -67,7 +67,7 @@ public partial class AddSaleEntities : Migration
             name: "Sale",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uuid", nullable: false),
+                Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                 UserId = table.Column<Guid>(type: "uuid", nullable: false),
                 BranchId = table.Column<Guid>(type: "uuid", nullable: false),
                 SaleNumber = table.Column<long>(type: "bigint", nullable: false)
@@ -97,7 +97,7 @@ public partial class AddSaleEntities : Migration
             name: "CartProducts",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uuid", nullable: false),
+                Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                 ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                 CartId = table.Column<Guid>(type: "uuid", nullable: false),
                 Quantity = table.Column<int>(type: "integer", nullable: false),
@@ -125,7 +125,7 @@ public partial class AddSaleEntities : Migration
             name: "Ratings",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uuid", nullable: false),
+                Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                 ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                 Rate = table.Column<decimal>(type: "numeric(3,2)", nullable: false),
                 Count = table.Column<int>(type: "integer", nullable: false)
@@ -145,7 +145,7 @@ public partial class AddSaleEntities : Migration
             name: "ProductsSold",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uuid", nullable: false),
+                Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                 SaleId = table.Column<Guid>(type: "uuid", nullable: false),
                 ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                 Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -176,7 +176,7 @@ public partial class AddSaleEntities : Migration
             name: "SaleDiscounts",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uuid", nullable: false),
+                Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                 SaleId = table.Column<Guid>(type: "uuid", nullable: false),
                 ProductSoldId = table.Column<Guid>(type: "uuid", nullable: false),
                 DiscountPercentage = table.Column<decimal>(type: "numeric", nullable: false),

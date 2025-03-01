@@ -6,18 +6,12 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
 public class Sale : BaseEntity
 {
-    [Required]
     public Guid UserId { get; set; }
 
-    [Required]
     public Guid BranchId { get; set; }
 
-    [Required]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long SaleNumber { get; set; }
 
-    [Required]
-    [Column(TypeName = "date")]
     public DateTime Date { get; set; } = DateTime.UtcNow;
 
     public DateTime? UpdatedAt { get; set; }
@@ -26,16 +20,13 @@ public class Sale : BaseEntity
 
     public ICollection<SaleDiscount> Discounts { get; set; } = [];
 
-    [Required]
-    [Column(TypeName = "decimal(18,2)")]
     public decimal SaleTotal { get; set; }
 
-    [Required]
     public bool Canceled { get; set; } = false;
 
-    public required User User { get; set; }
+    public User User { get; set; } = null!;
 
-    public required Branch Branch { get; set; }
+    public Branch Branch { get; set; } = null!;
 
     public static Sale SaleFactory(Cart cart, Branch branch)
     {
