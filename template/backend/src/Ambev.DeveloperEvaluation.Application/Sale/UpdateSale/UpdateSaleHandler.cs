@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Exceptions;
+﻿using Ambev.DeveloperEvaluation.Application.Sale.Notification;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -13,6 +14,7 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IMediator _bus;
 
     /// <summary>
     /// Initializes a new instance of CreateSaleHandler
@@ -26,13 +28,15 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
         IBranchRepository branchRepository,
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
-        IMapper mapper)
+        IMapper mapper,
+        IMediator bus)
     {
         _saleRepository = saleRepository;
         _branchRepository = branchRepository;
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _bus = bus;
     }
 
     /// <summary>
@@ -43,6 +47,7 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
     /// <returns>The update sale details</returns>
     public async Task<UpdateSaleResult> Handle(UpdateSaleCommand command, CancellationToken cancellationToken)
     {
+        
 
         var validator = new UpdateSaleCommandValidator();
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
@@ -62,6 +67,8 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
         if (user == null)
             throw new NotFoundException($"User with ID {command.UserId} not found");
 
+        var isCanceledBefore = sale.Canceled;
+
         _mapper.Map(command, sale);
 
         sale.ApplyDiscounts();
@@ -69,6 +76,15 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
         sale.UpdatedAt = DateTime.UtcNow;
 
         await _unitOfWork.CommitAsync(cancellationToken);
+
+        var saleModifiedNotification = new SaleModifiedNotification(sale);
+        await _bus.Publish(saleModifiedNotification, cancellationToken);
+
+        if (!isCanceledBefore && sale.Canceled)
+        {
+            var saleCancelledNotification = new SaleCancelledNotification(sale);
+            await _bus.Publish(saleCancelledNotification, cancellationToken);
+        }
 
         var result = _mapper.Map<UpdateSaleResult>(sale);
         return result;
