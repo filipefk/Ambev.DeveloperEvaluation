@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Exceptions;
+﻿using Ambev.DeveloperEvaluation.Application.Sale.Notification;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -16,6 +17,7 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
     private readonly IBranchRepository _branchRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IMediator _bus;
 
     /// <summary>
     /// Initializes a new instance of CreateSaleHandler
@@ -29,13 +31,15 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         ICartRepository cartRepository,
         IBranchRepository branchRepository,
         IUnitOfWork unitOfWork,
-        IMapper mapper)
+        IMapper mapper,
+        IMediator bus)
     {
         _saleRepository = saleRepository;
         _cartRepository = cartRepository;
         _branchRepository = branchRepository;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _bus = bus;
     }
 
     /// <summary>
@@ -72,6 +76,9 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         var result = _mapper.Map<CreateSaleResult>(sale);
 
         await _unitOfWork.CommitAsync(cancellationToken);
+
+        var saleCreatedNotification = new SaleCreatedNotification(sale);
+        await _bus.Publish(saleCreatedNotification, cancellationToken);
 
         return result;
     }
