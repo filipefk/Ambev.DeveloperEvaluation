@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Exceptions;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -29,7 +30,7 @@ public class ListProductsHandler : IRequestHandler<ListProductsCommand, ListProd
         var paginatedResult = await _productRepository.GetAllAsync(command.Page, command.Size, command.Order!, cancellationToken);
 
         if (paginatedResult == null)
-            throw new InvalidOperationException("No products found");
+            throw new NotFoundException("No products found");
 
         var baseProductsResult = _mapper.Map<List<BaseProductResult>>(paginatedResult.Results);
 

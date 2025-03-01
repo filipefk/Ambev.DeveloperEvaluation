@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Cart.DeleteCart;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Cart.TestData;
 using FluentAssertions;
@@ -53,8 +54,8 @@ public class DeleteCartHandlerTests
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
     }
 
-    [Fact(DisplayName = "Given a valid command When cart not exists When deleting cart Then throws a KeyNotFoundException exception")]
-    public async Task Handle_ValidCommand_With_CartID_Not_Found_Returns_KeyNotFoundException_Exception()
+    [Fact(DisplayName = "Given a valid command When cart not exists When deleting cart Then throws a NotFoundException")]
+    public async Task Handle_ValidCommand_With_CartID_Not_Found_Returns_NotFoundException()
     {
         // Given
         var command = DeleteCartHandlerTestData.GenerateValidCommand();
@@ -63,7 +64,7 @@ public class DeleteCartHandlerTests
         var act = () => _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await act.Should().ThrowAsync<KeyNotFoundException>();
+        await act.Should().ThrowAsync<NotFoundException>();
         await _cartRepository.Received(1).DeleteAsync(command.Id, CancellationToken.None);
         await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
     }

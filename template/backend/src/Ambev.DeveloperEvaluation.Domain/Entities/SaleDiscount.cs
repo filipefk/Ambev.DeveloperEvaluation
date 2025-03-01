@@ -1,30 +1,46 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Common;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
+/// <summary>
+/// Represents a discount applied to a sale.
+/// </summary>
 [Table("SaleDiscounts")]
 public class SaleDiscount : BaseEntity
 {
-    [Required]
+    /// <summary>
+    /// Gets or sets the sale ID associated with the discount.
+    /// </summary>
     public Guid SaleId { get; set; }
 
+    /// <summary>
+    /// Gets or sets the product sold ID associated with the discount.
+    /// </summary>
     public required Guid ProductSoldId { get; set; }
 
-    [Required]
-    [Range(0, 100)]
+    /// <summary>
+    /// Gets or sets the discount percentage.
+    /// </summary>
     public decimal DiscountPercentage { get; set; }
 
-    [Required]
-    [Column(TypeName = "decimal(18,2)")]
+    /// <summary>
+    /// Gets or sets the discount value.
+    /// </summary>
     public decimal DiscountValue { get; set; }
 
-    [Required]
-    [MaxLength(255)]
+    /// <summary>
+    /// Gets or sets the reason for the discount.
+    /// </summary>
     public string Reason { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Gets or sets the sale associated with the discount.
+    /// </summary>
     public required Sale Sale { get; set; }
 
+    /// <summary>
+    /// Gets or sets the product sold associated with the discount.
+    /// </summary>
     public required ProductSold ProductSold { get; set; }
 }

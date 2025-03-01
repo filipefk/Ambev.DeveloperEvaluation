@@ -1,6 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.UpdateUser;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
@@ -82,8 +83,8 @@ public class UpdateUserHandlerTests
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
     }
 
-    [Fact(DisplayName = "Given valid user data with existing email When updating user Then throws InvalidOperationException")]
-    public async Task Handle_Valid_Command_With_Existing_Email_Throws_InvalidOperationException()
+    [Fact(DisplayName = "Given valid user data with existing email When updating user Then throws OperationInvalidException")]
+    public async Task Handle_Valid_Command_With_Existing_Email_Throws_OperationInvalidException()
     {
         // Given
         var command = UpdateUserHandlerTestData.GenerateValidCommand();
@@ -103,21 +104,19 @@ public class UpdateUserHandlerTests
             Arg.Any<CancellationToken>())
             .Returns(user);
 
-        _passwordHasher.HashPassword(Arg.Any<string>()).Returns("hashedPassword");
-
         // When
         var act = () => _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await act.Should().ThrowAsync<InvalidOperationException>();
+        await act.Should().ThrowAsync<OperationInvalidException>();
 
         await _userRepository.Received(1).GetByEmailAsync(command.Email, CancellationToken.None);
         await _userRepository.Received(0).GetByIdAsync(Arg.Any<Guid>(), CancellationToken.None);
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
     }
 
-    [Fact(DisplayName = "Given valid user data When updating user When user not exists Then throws InvalidOperationException")]
-    public async Task Handle_Valid_Command_User_Not_Exists_Throws_InvalidOperationException()
+    [Fact(DisplayName = "Given valid user data When updating user When user not exists Then throws NotFoundException")]
+    public async Task Handle_Valid_Command_User_Not_Exists_Throws_NotFoundException()
     {
         // Given
         var command = UpdateUserHandlerTestData.GenerateValidCommand();
@@ -132,13 +131,11 @@ public class UpdateUserHandlerTests
             Arg.Any<CancellationToken>())
             .Returns((User)null!);
 
-        _passwordHasher.HashPassword(Arg.Any<string>()).Returns("hashedPassword");
-
         // When
         var act = () => _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await act.Should().ThrowAsync<InvalidOperationException>();
+        await act.Should().ThrowAsync<NotFoundException>();
 
         await _userRepository.Received(1).GetByEmailAsync(command.Email, CancellationToken.None);
         await _userRepository.Received(1).GetByIdAsync(command.Id, CancellationToken.None);

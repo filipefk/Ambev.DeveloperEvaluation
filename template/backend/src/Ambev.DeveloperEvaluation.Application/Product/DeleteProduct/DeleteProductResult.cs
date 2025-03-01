@@ -1,7 +1,7 @@
 ﻿namespace Ambev.DeveloperEvaluation.Application.Product.DeleteProduct;
 
 /// <summary>
-/// Response model for DeleteUser operation
+/// Response model for DeleteProduct operation
 /// </summary>
 public class DeleteProductResult
 {

@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Product.DeleteProduct;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Product.TestData;
 using FluentAssertions;
@@ -53,8 +54,8 @@ public class DeleteProductHandlerTests
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
     }
 
-    [Fact(DisplayName = "Given a valid command When product not exists When deleting product Then throws a KeyNotFoundException exception")]
-    public async Task Handle_ValidCommand_With_ProductID_Not_Found_Returns_KeyNotFoundException_Exception()
+    [Fact(DisplayName = "Given a valid command When product not exists When deleting product Then throws a NotFoundException")]
+    public async Task Handle_ValidCommand_With_ProductID_Not_Found_Returns_NotFoundException()
     {
         // Given
         var command = DeleteProductHandlerTestData.GenerateValidCommand();
@@ -63,7 +64,7 @@ public class DeleteProductHandlerTests
         var act = () => _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await act.Should().ThrowAsync<KeyNotFoundException>();
+        await act.Should().ThrowAsync<NotFoundException>();
         await _productRepository.Received(1).DeleteAsync(command.Id, CancellationToken.None);
         await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
     }

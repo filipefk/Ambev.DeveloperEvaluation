@@ -33,8 +33,7 @@ public static class CartTestData
                 .RuleFor(p => p.Product, _ => null!)
                 .Generate()
         })
-        .RuleFor(c => c.UpdatedAt, f => f.Date.Recent())
-        .RuleFor(c => c.User, _ => null!);
+        .RuleFor(c => c.UpdatedAt, f => f.Date.Recent());
 
     /// <summary>
     /// Generates a valid Cart entity with randomized data.
