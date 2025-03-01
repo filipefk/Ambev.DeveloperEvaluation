@@ -29,8 +29,10 @@ Role: Admin
 ```
 
 **A API também vai criar uma filial (Branch), que será necessária para realizar uma venda (Sale). Infelizmente ainda não temos a opção de cadastrar filiais pela API, mas esta funcionalidade em breve estará disponível**
-`Id: 490dfaf7-0c1b-4855-a79f-3b0cd3bd1ee2`
-`Name: Main store`
+```
+Id: 490dfaf7-0c1b-4855-a79f-3b0cd3bd1ee2
+Name: Main store
+```
 
 ## Utilizando a API
 **A API está documentada pelo Swagger e o primeiro endpoint a ser executado é o de autenticação (Auth) para receber um token**
