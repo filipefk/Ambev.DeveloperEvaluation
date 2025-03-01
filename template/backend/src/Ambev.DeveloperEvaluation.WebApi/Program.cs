@@ -126,6 +126,16 @@ public class Program
                     });
                     context.SaveChanges();
                 }
+
+                if (!context.Branches.Any())
+                {
+                    context.Branches.Add(new Branch
+                    {
+                        Id = Guid.Parse("490dfaf7-0c1b-4855-a79f-3b0cd3bd1ee2"),
+                        Name = "Main store"
+                    });
+                    context.SaveChanges();
+                }
             }
 
             app.Run();
