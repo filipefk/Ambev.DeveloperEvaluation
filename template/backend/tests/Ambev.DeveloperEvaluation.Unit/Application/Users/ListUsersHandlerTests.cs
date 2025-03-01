@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 using AutoMapper;
@@ -64,8 +65,8 @@ public class ListUsersHandlerTests
         await act.Should().ThrowAsync<FluentValidation.ValidationException>();
     }
 
-    [Fact(DisplayName = "Given a valid command When users not exists When get users Then throws a InvalidOperationException")]
-    public async Task Handle_ValidCommand_With_UserID_Not_Found_Returns_KeyNotFoundException_Exception()
+    [Fact(DisplayName = "Given a valid command When users not exists When get users Then throws a NotFoundException")]
+    public async Task Handle_ValidCommand_With_UserID_Not_Found_Returns_NotFoundException()
     {
         // Given
         var command = ListUsersHandlerTestData.GenerateValidCommand();
@@ -74,7 +75,7 @@ public class ListUsersHandlerTests
         var act = () => _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await act.Should().ThrowAsync<InvalidOperationException>();
+        await act.Should().ThrowAsync<NotFoundException>();
     }
 
 }

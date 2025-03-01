@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Exceptions;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -43,7 +44,7 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
 
         var product = await _productRepository.GetByIdAsync(command.Id, cancellationToken);
         if (product == null)
-            throw new InvalidOperationException($"Product with id {command.Id} does not exists");
+            throw new NotFoundException($"Product with id {command.Id} does not exists");
 
         _mapper.Map(command, product);
 

@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Product.GetProduct;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Product.TestData;
 using Ambev.DeveloperEvaluation.Unit.Application.Products.TestData;
@@ -66,8 +67,8 @@ public class GetProductHandlerTests
         await act.Should().ThrowAsync<FluentValidation.ValidationException>();
     }
 
-    [Fact(DisplayName = "Given a valid command When product not exists When get product Then throws a KeyNotFoundException exception")]
-    public async Task Handle_ValidCommand_With_ProductID_Not_Found_Returns_KeyNotFoundException_Exception()
+    [Fact(DisplayName = "Given a valid command When product not exists When get product Then throws a NotFoundException")]
+    public async Task Handle_ValidCommand_With_ProductID_Not_Found_Returns_NotFoundException()
     {
         // Given
         var command = GetProductHandlerTestData.GenerateValidCommand();
@@ -76,6 +77,6 @@ public class GetProductHandlerTests
         var act = () => _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await act.Should().ThrowAsync<KeyNotFoundException>();
+        await act.Should().ThrowAsync<NotFoundException>();
     }
 }

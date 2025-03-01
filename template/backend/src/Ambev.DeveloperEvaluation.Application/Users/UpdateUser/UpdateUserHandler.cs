@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -47,11 +48,11 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UpdateUserRe
 
         var existingUserWithEmail = await _userRepository.GetByEmailAsync(command.Email, cancellationToken);
         if (existingUserWithEmail != null && existingUserWithEmail.Id != command.Id)
-            throw new InvalidOperationException($"User with email {command.Email} already exists");
+            throw new OperationInvalidException($"User with email {command.Email} already exists");
 
         var user = await _userRepository.GetByIdAsync(command.Id, cancellationToken);
         if (user == null)
-            throw new InvalidOperationException($"User with id {command.Id} does not exists");
+            throw new NotFoundException($"User with id {command.Id} does not exists");
 
         _mapper.Map(command, user);
         user.Password = _passwordHasher.HashPassword(command.Password);
