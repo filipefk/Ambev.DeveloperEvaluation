@@ -1,86 +1,54 @@
 # Developer Evaluation Project
 
-`READ CAREFULLY`
 
-## Instructions
-**The test below will have up to 7 calendar days to be delivered from the date of receipt of this manual.**
+## Instruções para baixar e executar a API
+**Os passos descritos abaixo são para executar a API usando o Docker. Certifique-se de ter o Docker instalado para que os comandos funcionem corretamente**
 
-- The code must be versioned in a public Github repository and a link must be sent for evaluation once completed
-- Upload this template to your repository and start working from it
-- Read the instructions carefully and make sure all requirements are being addressed
-- The repository must provide instructions on how to configure, execute and test the project
-- Documentation and overall organization will also be taken into consideration
+- Baixe os fontes da main que está tageada com a versão 3.0.0
+- Após os fontes baixados, abra um console na pasta \template\backend e crie a imagem do Docker com o comando abaixo
+  ```bash
+  docker build -t ambevdeveloperevaluationwebapi:3.0 .
+  ```
+- Com a imagem pronta, basta subir o `Compose` executando também no terminal o comando abaixo
+  ```bash
+  docker compose up -d
+  ```
+- Acessar o Swagger da API na URL https://localhost/swagger/index.html
 
-## Use Case
-**You are a developer on the DeveloperStore team. Now we need to implement the API prototypes.**
+## Primeiro acesso
+**A API já está configurada para conectar no banco de dados PostgreSQL com as credenciais que vieram definidas no arquivo docker-compose.yml**
 
-As we work with `DDD`, to reference entities from other domains, we use the `External Identities` pattern with denormalization of entity descriptions.
+**Ao executar pela primeira vez, a API vai criar as tabelas necessárias e um usuário**
+```
+Username: Admin da Taking
+Email: Admin@taking.com.br
+Password: 1234.Abc
+Phone: +551141026121
+Status: Active
+Role: Admin
+```
 
-Therefore, you will write an API (complete CRUD) that handles sales records. The API needs to be able to inform:
+**A API também vai criar uma filial (Branch), que será necessária para realizar uma venda (Sale). Infelizmente ainda não temos a opção de cadastrar filiais pela API, mas esta funcionalidade em breve estará disponível**
+```
+Id: 490dfaf7-0c1b-4855-a79f-3b0cd3bd1ee2
+Name: Main store
+```
 
-* Sale number
-* Date when the sale was made
-* Customer
-* Total sale amount
-* Branch where the sale was made
-* Products
-* Quantities
-* Unit prices
-* Discounts
-* Total amount for each item
-* Cancelled/Not Cancelled
+## Utilizando a API
+**A API está documentada pelo Swagger e o primeiro endpoint a ser executado é o de autenticação (Auth) para receber um token**
 
-It's not mandatory, but it would be a differential to build code for publishing events of:
-* SaleCreated
-* SaleModified
-* SaleCancelled
-* ItemCancelled
+**O token recebido deve ser adicionado pelo botão "Authorize" que está a direita no topo da página do Swagger**
 
-If you write the code, **it's not required** to actually publish to any Message Broker. You can log a message in the application log or however you find most convenient.
+**Lembre de incluir a palavra "Bearer " e um espaço antes do token conforme está orientado na própria tela que aparece**
 
-### Business Rules
+`Examplo: 'Bearer 123abcde'`
 
-* Purchases above 4 identical items have a 10% discount
-* Purchases between 10 and 20 identical items have a 20% discount
-* It's not possible to sell above 20 identical items
-* Purchases below 4 items cannot have a discount
+**A partir deste ponto, é possível executar o CRUD de todas as entidades da API.**
 
-These business rules define quantity-based discounting tiers and limitations:
+**O banco de dados inicia vazio, por isso será necessário cadastrar os Produtos para depois poder criar um carrinho e uma venda. Em uma próxima versão, teremos o recurso de carga de dados automática para facilitar os testes**
 
-1. Discount Tiers:
-   - 4+ items: 10% discount
-   - 10-20 items: 20% discount
+**Também não temos ainda endpoints para trazer indicadores de venda, mas é possível visualizar a listagem completa de vendas com os dados pertinentes**
 
-2. Restrictions:
-   - Maximum limit: 20 items per product
-   - No discounts allowed for quantities below 4 items
+**Qualquer dúvida, estou a disposição**
 
-## Overview
-This section provides a high-level overview of the project and the various skills and competencies it aims to assess for developer candidates. 
-
-See [Overview](/.doc/overview.md)
-
-## Tech Stack
-This section lists the key technologies used in the project, including the backend, testing, frontend, and database components. 
-
-See [Tech Stack](/.doc/tech-stack.md)
-
-## Frameworks
-This section outlines the frameworks and libraries that are leveraged in the project to enhance development productivity and maintainability. 
-
-See [Frameworks](/.doc/frameworks.md)
-
-<!-- 
-## API Structure
-This section includes links to the detailed documentation for the different API resources:
-- [API General](./docs/general-api.md)
-- [Products API](/.doc/products-api.md)
-- [Carts API](/.doc/carts-api.md)
-- [Users API](/.doc/users-api.md)
-- [Auth API](/.doc/auth-api.md)
--->
-
-## Project Structure
-This section describes the overall structure and organization of the project files and directories. 
-
-See [Project Structure](/.doc/project-structure.md)
+`Enjoi`
