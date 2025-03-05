@@ -14,7 +14,7 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IMediator _bus;
+    private readonly IMediator _mediator;
 
     /// <summary>
     /// Initializes a new instance of CreateSaleHandler
@@ -29,14 +29,14 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
         IMapper mapper,
-        IMediator bus)
+        IMediator mediator)
     {
         _saleRepository = saleRepository;
         _branchRepository = branchRepository;
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _bus = bus;
+        _mediator = mediator;
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
     /// <returns>The update sale details</returns>
     public async Task<UpdateSaleResult> Handle(UpdateSaleCommand command, CancellationToken cancellationToken)
     {
-        
+
 
         var validator = new UpdateSaleCommandValidator();
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
@@ -78,12 +78,12 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
         await _unitOfWork.CommitAsync(cancellationToken);
 
         var saleModifiedNotification = new SaleModifiedNotification(sale);
-        await _bus.Publish(saleModifiedNotification, cancellationToken);
+        await _mediator.Publish(saleModifiedNotification, cancellationToken);
 
         if (!isCanceledBefore && sale.Canceled)
         {
             var saleCancelledNotification = new SaleCancelledNotification(sale);
-            await _bus.Publish(saleCancelledNotification, cancellationToken);
+            await _mediator.Publish(saleCancelledNotification, cancellationToken);
         }
 
         var result = _mapper.Map<UpdateSaleResult>(sale);

@@ -17,7 +17,7 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
     private readonly IBranchRepository _branchRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IMediator _bus;
+    private readonly IMediator _mediator;
 
     /// <summary>
     /// Initializes a new instance of CreateSaleHandler
@@ -32,14 +32,14 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         IBranchRepository branchRepository,
         IUnitOfWork unitOfWork,
         IMapper mapper,
-        IMediator bus)
+        IMediator mediator)
     {
         _saleRepository = saleRepository;
         _cartRepository = cartRepository;
         _branchRepository = branchRepository;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
-        _bus = bus;
+        _mediator = mediator;
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         await _unitOfWork.CommitAsync(cancellationToken);
 
         var saleCreatedNotification = new SaleCreatedNotification(sale);
-        await _bus.Publish(saleCreatedNotification, cancellationToken);
+        await _mediator.Publish(saleCreatedNotification, cancellationToken);
 
         return result;
     }

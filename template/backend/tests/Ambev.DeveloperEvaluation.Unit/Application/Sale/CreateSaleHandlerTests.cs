@@ -1,10 +1,12 @@
 using Ambev.DeveloperEvaluation.Application.Sale.CreateSale;
+using Ambev.DeveloperEvaluation.Application.Sale.Notification;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData;
 using AutoMapper;
 using FluentAssertions;
+using MediatR;
 using NSubstitute;
 using Xunit;
 
@@ -20,6 +22,7 @@ public class CreateSaleHandlerTests
     private readonly IBranchRepository _branchRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly CreateSaleHandler _handler;
 
     /// <summary>
@@ -33,7 +36,8 @@ public class CreateSaleHandlerTests
         _branchRepository = Substitute.For<IBranchRepository>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<CreateSaleProfile>()));
-        _handler = new CreateSaleHandler(_saleRepository, _cartRepository, _branchRepository, _unitOfWork, _mapper);
+        _mediator = Substitute.For<IMediator>();
+        _handler = new CreateSaleHandler(_saleRepository, _cartRepository, _branchRepository, _unitOfWork, _mapper, _mediator);
     }
 
     /// <summary>
@@ -65,6 +69,7 @@ public class CreateSaleHandlerTests
         await _cartRepository.Received(1).GetByIdAsync(command.CartId, Arg.Any<CancellationToken>());
         await _saleRepository.Received(1).CreateAsync(Arg.Any<DeveloperEvaluation.Domain.Entities.Sale>(), Arg.Any<CancellationToken>());
         await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
+        await _mediator.Received(1).Publish(Arg.Any<SaleCreatedNotification>(), Arg.Any<CancellationToken>());
     }
 
     /// <summary>
@@ -86,6 +91,7 @@ public class CreateSaleHandlerTests
         await _cartRepository.Received(0).GetByIdAsync(command.CartId, Arg.Any<CancellationToken>());
         await _saleRepository.Received(0).CreateAsync(Arg.Any<DeveloperEvaluation.Domain.Entities.Sale>(), Arg.Any<CancellationToken>());
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
+        await _mediator.Received(0).Publish(Arg.Any<SaleCreatedNotification>(), Arg.Any<CancellationToken>());
     }
 
     /// <summary>
@@ -116,6 +122,7 @@ public class CreateSaleHandlerTests
         await _cartRepository.Received(0).GetByIdAsync(command.CartId, Arg.Any<CancellationToken>());
         await _saleRepository.Received(0).CreateAsync(Arg.Any<DeveloperEvaluation.Domain.Entities.Sale>(), Arg.Any<CancellationToken>());
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
+        await _mediator.Received(0).Publish(Arg.Any<SaleCreatedNotification>(), Arg.Any<CancellationToken>());
     }
 
     /// <summary>
@@ -146,6 +153,7 @@ public class CreateSaleHandlerTests
         await _cartRepository.Received(1).GetByIdAsync(command.CartId, Arg.Any<CancellationToken>());
         await _saleRepository.Received(0).CreateAsync(Arg.Any<DeveloperEvaluation.Domain.Entities.Sale>(), Arg.Any<CancellationToken>());
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
+        await _mediator.Received(0).Publish(Arg.Any<SaleCreatedNotification>(), Arg.Any<CancellationToken>());
     }
 
 }
