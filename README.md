@@ -4,16 +4,12 @@
 ## Instruções para baixar e executar a API
 **Os passos descritos abaixo são para executar a API usando o Docker. Certifique-se de ter o Docker instalado para que os comandos funcionem corretamente**
 
-- Baixe os fontes da main que está tageada com a versão 3.0.0
+- Baixe os fontes da main que está tageada com a versão 4.0.0
 - Após os fontes baixados, abra um console na pasta \template\backend e crie a imagem do Docker com o comando abaixo
   ```bash
-  docker build -t ambevdeveloperevaluationwebapi:3.0 .
+  docker-compose up -d --build
   ```
-- Com a imagem pronta, basta subir o `Compose` executando também no terminal o comando abaixo
-  ```bash
-  docker compose up -d
-  ```
-- Acessar o Swagger da API na URL https://localhost/swagger/index.html
+- Acessar o Swagger da API na URL http://localhost:8080/swagger/index.html
 
 ## Primeiro acesso
 **A API já está configurada para conectar no banco de dados PostgreSQL com as credenciais que vieram definidas no arquivo docker-compose.yml**
