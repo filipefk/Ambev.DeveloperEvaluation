@@ -1,10 +1,12 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sale.UpdateSale;
+﻿using Ambev.DeveloperEvaluation.Application.Sale.Notification;
+using Ambev.DeveloperEvaluation.Application.Sale.UpdateSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData;
 using AutoMapper;
 using FluentAssertions;
+using MediatR;
 using NSubstitute;
 using Xunit;
 
@@ -17,6 +19,7 @@ public class UpdateSaleHandlerTests
     private readonly IBranchRepository _branchRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly UpdateSaleHandler _handler;
 
     public UpdateSaleHandlerTests()
@@ -26,7 +29,8 @@ public class UpdateSaleHandlerTests
         _branchRepository = Substitute.For<IBranchRepository>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<UpdateSaleProfile>()));
-        _handler = new UpdateSaleHandler(_saleRepository, _branchRepository, _userRepository, _unitOfWork, _mapper);
+        _mediator = Substitute.For<IMediator>();
+        _handler = new UpdateSaleHandler(_saleRepository, _branchRepository, _userRepository, _unitOfWork, _mapper, _mediator);
     }
 
     [Fact(DisplayName = "Given valid sale data When updating sale Then returns success response")]
@@ -62,6 +66,7 @@ public class UpdateSaleHandlerTests
         await _branchRepository.Received(1).GetByIdAsync(command.BranchId, CancellationToken.None);
         await _saleRepository.Received(1).GetByIdAsync(command.Id, CancellationToken.None);
         await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
+        await _mediator.Received(1).Publish(Arg.Any<SaleModifiedNotification>(), Arg.Any<CancellationToken>());
     }
 
     [Fact(DisplayName = "Given invalid sale data When updating sale Then throws validation exception")]
@@ -82,6 +87,7 @@ public class UpdateSaleHandlerTests
         await _branchRepository.Received(0).GetByIdAsync(command.BranchId, CancellationToken.None);
         await _saleRepository.Received(0).GetByIdAsync(Arg.Any<Guid>(), CancellationToken.None);
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
+        await _mediator.Received(0).Publish(Arg.Any<SaleModifiedNotification>(), Arg.Any<CancellationToken>());
     }
 
     [Fact(DisplayName = "Given valid sale data When updating sale When sale not exists Then throws NotFoundException")]
@@ -113,6 +119,7 @@ public class UpdateSaleHandlerTests
         await _branchRepository.Received(0).GetByIdAsync(command.BranchId, CancellationToken.None);
         await _userRepository.Received(0).GetByIdAsync(command.UserId, CancellationToken.None);
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
+        await _mediator.Received(0).Publish(Arg.Any<SaleModifiedNotification>(), Arg.Any<CancellationToken>());
     }
 
     [Fact(DisplayName = "Given valid sale data When updating sale When branch not exists Then throws NotFoundException")]
@@ -145,6 +152,7 @@ public class UpdateSaleHandlerTests
         await _branchRepository.Received(1).GetByIdAsync(command.BranchId, CancellationToken.None);
         await _userRepository.Received(0).GetByIdAsync(command.UserId, CancellationToken.None);
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
+        await _mediator.Received(0).Publish(Arg.Any<SaleModifiedNotification>(), Arg.Any<CancellationToken>());
     }
 
     [Fact(DisplayName = "Given valid sale data When updating sale When user not exists Then throws NotFoundException")]
@@ -177,5 +185,6 @@ public class UpdateSaleHandlerTests
         await _branchRepository.Received(1).GetByIdAsync(command.BranchId, CancellationToken.None);
         await _userRepository.Received(1).GetByIdAsync(command.UserId, CancellationToken.None);
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
+        await _mediator.Received(0).Publish(Arg.Any<SaleModifiedNotification>(), Arg.Any<CancellationToken>());
     }
 }
