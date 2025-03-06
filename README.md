@@ -14,7 +14,7 @@
 ## Primeiro acesso
 **A API já está configurada para conectar no banco de dados PostgreSQL com as credenciais que vieram definidas no arquivo docker-compose.yml**
 
-**Ao executar pela primeira vez, a API vai criar as tabelas necessárias e um usuário**
+**Ao executar pela primeira vez, a API vai criar as tabelas necessárias, alguns usuários, produtos e filiais. O usuário abaixo pode ser usado para autenticar o acesso**
 ```
 Username: Admin da Taking
 Email: Admin@taking.com.br
@@ -24,11 +24,7 @@ Status: Active
 Role: Admin
 ```
 
-**A API também vai criar uma filial (Branch), que será necessária para realizar uma venda (Sale). Infelizmente ainda não temos a opção de cadastrar filiais pela API, mas esta funcionalidade em breve estará disponível**
-```
-Id: 490dfaf7-0c1b-4855-a79f-3b0cd3bd1ee2
-Name: Main store
-```
+**Os outros usuários, produtos e filiais podem ser consultados pelas rotas de Get de cada entidade**
 
 ## Utilizando a API
 **A API está documentada pelo Swagger e o primeiro endpoint a ser executado é o de autenticação (Auth) para receber um token**
@@ -41,10 +37,20 @@ Name: Main store
 
 **A partir deste ponto, é possível executar o CRUD de todas as entidades da API.**
 
-**O banco de dados inicia vazio, por isso será necessário cadastrar os Produtos para depois poder criar um carrinho e uma venda. Em uma próxima versão, teremos o recurso de carga de dados automática para facilitar os testes**
+**Passo a passo para criar uma venda:**
+- Autentique o usuário e adicione o token para as próximas chamadas
+- Escolha os produtos e cadastre um carrinho
+- Se quiser pode cadastrar novos usuários e produtos também
+- Para criar uma venda, selecione o ID do carrinho e o ID de uma filial
+- Quando a venda é criada, o carrinho é apagado
+- Um usuário com a role "Customer" não pode fazer nada nos endpoints de usuários e só pode fazer consultas (Get) nos endpoints de produto
+- Quando a venda é criada, são aplicadas as regras de desconto definidas
+- Existe um endpoint específico para cancelar uma venda
 
-**Também não temos ainda endpoints para trazer indicadores de venda, mas é possível visualizar a listagem completa de vendas com os dados pertinentes**
+**Nesta versão, não temos endpoints para trazer indicadores de venda ainda, mas é possível visualizar a listagem completa de vendas com os dados pertinentes**
+
+**A solução tem 154 testes de unidade e 23 testes de integração**
+
+**Foram criados eventos para criação de venda, alteração de venda, cancelamento de venda e está sendo enviado para o LOG**
 
 **Qualquer dúvida, estou a disposição**
-
-`Enjoi`
