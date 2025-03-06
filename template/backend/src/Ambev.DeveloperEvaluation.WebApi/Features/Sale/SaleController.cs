@@ -92,11 +92,7 @@ public class SaleController : BaseController
         var command = _mapper.Map<DeleteSaleCommand>(request.Id);
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponse
-        {
-            Success = true,
-            Message = "Sale deleted successfully"
-        });
+        return OkSimple("Sale deleted successfully");
     }
 
     [HttpPut("{id}")]

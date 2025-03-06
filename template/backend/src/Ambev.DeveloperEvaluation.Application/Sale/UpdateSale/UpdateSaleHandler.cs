@@ -57,7 +57,7 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
 
         var sale = await _saleRepository.GetByIdAsync(command.Id, cancellationToken);
         if (sale == null)
-            throw new NotFoundException($"Sale with id {command.Id} does not exists");
+            throw new NotFoundException($"Sale with id {command.Id} not found");
 
         var branch = await _branchRepository.GetByIdAsync(command.BranchId, cancellationToken);
         if (branch == null)

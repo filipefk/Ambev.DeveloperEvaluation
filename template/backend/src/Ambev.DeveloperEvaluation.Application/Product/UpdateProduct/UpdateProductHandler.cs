@@ -44,7 +44,7 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
 
         var product = await _productRepository.GetByIdAsync(command.Id, cancellationToken);
         if (product == null)
-            throw new NotFoundException($"Product with id {command.Id} does not exists");
+            throw new NotFoundException($"Product with ID {command.Id} not found");
 
         _mapper.Map(command, product);
 

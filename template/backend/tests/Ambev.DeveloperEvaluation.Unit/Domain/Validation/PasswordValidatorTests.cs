@@ -1,6 +1,6 @@
 using Ambev.DeveloperEvaluation.Domain.Validation.Users;
-using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
 using FluentValidation.TestHelper;
+using TestUtil.Entities;
 using Xunit;
 
 namespace Ambev.DeveloperEvaluation.Unit.Domain.Validation;
@@ -25,7 +25,7 @@ public class PasswordValidatorTests
     public void Given_ValidPassword_When_Validated_Then_ShouldNotHaveErrors()
     {
         // Arrange
-        var password = UserTestData.GenerateValidPassword();
+        var password = UserBuilder.GenerateValidPassword();
 
         // Act
         var result = _validator.TestValidate(password);

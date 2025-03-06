@@ -1,6 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Validation.Users;
-using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
 using FluentAssertions;
+using TestUtil.Entities;
 using Xunit;
 
 namespace Ambev.DeveloperEvaluation.Unit.Domain.Validation;
@@ -19,7 +19,7 @@ public class UserNameValidatorTests
     public void UsernameTest(int sizeName, bool expectedResult)
     {
         // Arrange
-        var userName = UserTestData.GenerateUserNameWithLength(sizeName);
+        var userName = UserBuilder.GenerateUserNameWithLength(sizeName);
         var validator = new UserNameValidator();
 
         // Act

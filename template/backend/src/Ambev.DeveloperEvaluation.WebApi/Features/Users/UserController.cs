@@ -118,11 +118,7 @@ public class UserController : BaseController
         var command = _mapper.Map<DeleteUserCommand>(request.Id);
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponse
-        {
-            Success = true,
-            Message = "User deleted successfully"
-        });
+        return OkSimple("User deleted successfully");
     }
 
     /// <summary>

@@ -34,7 +34,7 @@ public static class AuthenticationExtension
             };
         });
 
-        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddScoped<IJwtTokenGenerator>(option => new JwtTokenGenerator(secretKey));
 
         return services;
     }

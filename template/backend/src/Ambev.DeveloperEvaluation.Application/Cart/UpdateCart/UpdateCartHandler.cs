@@ -45,7 +45,7 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
 
         var cart = await _cartRepository.GetByIdAsync(command.Id, cancellationToken);
         if (cart == null)
-            throw new NotFoundException($"Cart with id {command.Id} does not exists");
+            throw new NotFoundException($"Cart with id {command.Id} not found");
 
         _mapper.Map(command, cart);
 

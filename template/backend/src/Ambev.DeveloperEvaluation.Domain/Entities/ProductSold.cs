@@ -52,10 +52,10 @@ public class ProductSold : BaseEntity
     /// <summary>
     /// Gets or sets the sale associated with the sold product.
     /// </summary>
-    public required Sale Sale { get; set; }
+    public Sale Sale { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the product associated with the sold product.
     /// </summary>
-    public required Product Product { get; set; }
+    public Product Product { get; set; } = null!;
 }
