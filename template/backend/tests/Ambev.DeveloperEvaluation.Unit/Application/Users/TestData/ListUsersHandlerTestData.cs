@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
 using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
+using TestUtil.Entities;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 

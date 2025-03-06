@@ -1,6 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Validation.Users;
-using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
 using FluentAssertions;
+using TestUtil.Entities;
 using Xunit;
 
 namespace Ambev.DeveloperEvaluation.Unit.Domain.Validation;

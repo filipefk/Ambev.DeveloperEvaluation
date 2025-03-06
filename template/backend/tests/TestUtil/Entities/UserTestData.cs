@@ -2,7 +2,7 @@ using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Bogus;
 
-namespace Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
+namespace TestUtil.Entities;
 
 /// <summary>
 /// Provides methods for generating test data using the Bogus library.
@@ -22,10 +22,10 @@ public static class UserTestData
     /// - Role (Customer or Admin)
     /// </summary>
     private static readonly Faker<User> UserFaker = new Faker<User>()
-        .RuleFor(u => u.Username, f => f.Internet.UserName())
-        .RuleFor(u => u.Password, f => $"Test@{f.Random.Number(100, 999)}")
-        .RuleFor(u => u.Email, f => f.Internet.Email())
-        .RuleFor(u => u.Phone, f => $"+55{f.Random.Number(11, 99)}{f.Random.Number(100000000, 999999999)}")
+        .RuleFor(u => u.Username, _ => GenerateValidUsername())
+        .RuleFor(u => u.Password, _ => GenerateValidPassword())
+        .RuleFor(u => u.Email, _ => GenerateValidEmail())
+        .RuleFor(u => u.Phone, _ => GenerateValidPhone())
         .RuleFor(u => u.Status, f => f.PickRandom(UserStatus.Active, UserStatus.Suspended))
         .RuleFor(u => u.Role, f => f.PickRandom(UserRole.Customer, UserRole.Admin));
 

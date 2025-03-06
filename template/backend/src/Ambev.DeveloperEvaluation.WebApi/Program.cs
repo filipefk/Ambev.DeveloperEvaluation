@@ -6,6 +6,7 @@ using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
+using Ambev.DeveloperEvaluation.ORM.Extensions;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -106,37 +107,8 @@ public class Program
 
             app.MapControllers();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<DefaultContext>();
-
-                context.Database.Migrate();
-
-                if (!context.Users.Any())
-                {
-                    context.Users.Add(new User
-                    {
-                        Email = "Admin@taking.com.br",
-                        Username = "Admin da Taking",
-                        Password = "$2a$11$uVkKp9dH.FHvQeE1sszr.ud.9hYCFPMv58jQaWIkH2or8ArqF4XCG",
-                        Phone = "+551141026121",
-                        Status = Domain.Enums.UserStatus.Active,
-                        Role = Domain.Enums.UserRole.Admin
-                    });
-                    context.SaveChanges();
-                }
-
-                if (!context.Branches.Any())
-                {
-                    context.Branches.Add(new Branch
-                    {
-                        Id = Guid.Parse("490dfaf7-0c1b-4855-a79f-3b0cd3bd1ee2"),
-                        Name = "Main store"
-                    });
-                    context.SaveChanges();
-                }
-            }
+            if (!builder.Configuration.IsUnitTestEnviroment())
+                MigrateDatabase(app.Services);
 
             app.Run();
         }
@@ -147,6 +119,41 @@ public class Program
         finally
         {
             Log.CloseAndFlush();
+        }
+    }
+
+    private static void MigrateDatabase(IServiceProvider service)
+    {
+        using (var scope = service.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<DefaultContext>();
+
+            context.Database.Migrate();
+
+            if (!context.Users.Any())
+            {
+                context.Users.Add(new User
+                {
+                    Email = "Admin@taking.com.br",
+                    Username = "Admin da Taking",
+                    Password = "$2a$11$uVkKp9dH.FHvQeE1sszr.ud.9hYCFPMv58jQaWIkH2or8ArqF4XCG",
+                    Phone = "+551141026121",
+                    Status = Domain.Enums.UserStatus.Active,
+                    Role = Domain.Enums.UserRole.Admin
+                });
+                context.SaveChanges();
+            }
+
+            if (!context.Branches.Any())
+            {
+                context.Branches.Add(new Branch
+                {
+                    Id = Guid.Parse("490dfaf7-0c1b-4855-a79f-3b0cd3bd1ee2"),
+                    Name = "Main store"
+                });
+                context.SaveChanges();
+            }
         }
     }
 }

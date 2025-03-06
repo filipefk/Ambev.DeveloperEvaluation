@@ -2,10 +2,10 @@
 using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
-using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
 using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
+using TestUtil.Entities;
 using Xunit;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Users;
