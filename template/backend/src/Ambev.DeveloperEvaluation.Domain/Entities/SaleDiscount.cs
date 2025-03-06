@@ -17,7 +17,7 @@ public class SaleDiscount : BaseEntity
     /// <summary>
     /// Gets or sets the product sold ID associated with the discount.
     /// </summary>
-    public required Guid ProductSoldId { get; set; }
+    public Guid ProductSoldId { get; set; }
 
     /// <summary>
     /// Gets or sets the discount percentage.
@@ -37,10 +37,10 @@ public class SaleDiscount : BaseEntity
     /// <summary>
     /// Gets or sets the sale associated with the discount.
     /// </summary>
-    public required Sale Sale { get; set; }
+    public Sale Sale { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the product sold associated with the discount.
     /// </summary>
-    public required ProductSold ProductSold { get; set; }
+    public ProductSold ProductSold { get; set; } = null!;
 }

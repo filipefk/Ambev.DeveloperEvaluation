@@ -52,7 +52,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UpdateUserRe
 
         var user = await _userRepository.GetByIdAsync(command.Id, cancellationToken);
         if (user == null)
-            throw new NotFoundException($"User with id {command.Id} does not exists");
+            throw new NotFoundException($"User with id {command.Id} not found");
 
         _mapper.Map(command, user);
         user.Password = _passwordHasher.HashPassword(command.Password);

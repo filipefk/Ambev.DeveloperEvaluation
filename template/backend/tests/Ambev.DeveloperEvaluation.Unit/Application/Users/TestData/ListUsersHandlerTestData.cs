@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
 using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
+using TestUtil.Entities;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 
@@ -35,7 +35,7 @@ public static class ListUsersHandlerTestData
 
         for (var i = 0; i < listCount; i++)
         {
-            users.Add(UserTestData.GenerateValidUser());
+            users.Add(UserBuilder.GenerateValidUser());
         }
 
         return new PaginatedResult<User>(users, currentPage, pageSize, totalCount);

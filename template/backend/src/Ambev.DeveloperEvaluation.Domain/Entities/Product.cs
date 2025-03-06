@@ -45,5 +45,5 @@ public class Product : BaseEntity
     /// <summary>
     /// Gets or sets the rating of the product.
     /// </summary>
-    public required Rating Rating { get; set; }
+    public Rating Rating { get; set; } = null!;
 }

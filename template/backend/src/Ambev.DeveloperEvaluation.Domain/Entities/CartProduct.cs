@@ -37,10 +37,10 @@ public class CartProduct : BaseEntity
     /// <summary>
     /// Gets or sets the product associated with this cart product.
     /// </summary>
-    public required Product Product { get; set; }
+    public Product Product { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the cart associated with this cart product.
     /// </summary>
-    public required Cart Cart { get; set; }
+    public Cart Cart { get; set; } = null!;
 }

@@ -92,11 +92,7 @@ public class ProductController : BaseController
         var command = _mapper.Map<DeleteProductCommand>(request.Id);
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponse
-        {
-            Success = true,
-            Message = "Product deleted successfully"
-        });
+        return OkSimple("Product deleted successfully");
     }
 
     [HttpPut("{id}")]

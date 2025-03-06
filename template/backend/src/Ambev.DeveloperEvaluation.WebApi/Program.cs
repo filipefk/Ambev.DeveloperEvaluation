@@ -6,6 +6,7 @@ using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
+using Ambev.DeveloperEvaluation.ORM.Extensions;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -106,37 +107,8 @@ public class Program
 
             app.MapControllers();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<DefaultContext>();
-
-                context.Database.Migrate();
-
-                if (!context.Users.Any())
-                {
-                    context.Users.Add(new User
-                    {
-                        Email = "Admin@taking.com.br",
-                        Username = "Admin da Taking",
-                        Password = "$2a$11$uVkKp9dH.FHvQeE1sszr.ud.9hYCFPMv58jQaWIkH2or8ArqF4XCG",
-                        Phone = "+551141026121",
-                        Status = Domain.Enums.UserStatus.Active,
-                        Role = Domain.Enums.UserRole.Admin
-                    });
-                    context.SaveChanges();
-                }
-
-                if (!context.Branches.Any())
-                {
-                    context.Branches.Add(new Branch
-                    {
-                        Id = Guid.Parse("490dfaf7-0c1b-4855-a79f-3b0cd3bd1ee2"),
-                        Name = "Main store"
-                    });
-                    context.SaveChanges();
-                }
-            }
+            if (!builder.Configuration.IsUnitTestEnviroment())
+                MigrateDatabase(app.Services);
 
             app.Run();
         }
@@ -148,5 +120,166 @@ public class Program
         {
             Log.CloseAndFlush();
         }
+    }
+
+    private static void MigrateDatabase(IServiceProvider service)
+    {
+        using (var scope = service.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<DefaultContext>();
+
+            context.Database.Migrate();
+
+            AddTestData(context);
+        }
+    }
+
+    private static void AddTestData(DefaultContext context)
+    {
+        if (!context.Users.Any())
+        {
+            context.Users.Add(new User
+            {
+                Email = "Admin@taking.com.br",
+                Username = "Taking Admin",
+                Password = "$2a$11$uVkKp9dH.FHvQeE1sszr.ud.9hYCFPMv58jQaWIkH2or8ArqF4XCG",
+                Phone = "+551141026121",
+                Status = Domain.Enums.UserStatus.Active,
+                Role = Domain.Enums.UserRole.Admin
+            });
+            context.SaveChanges();
+
+            context.Users.Add(new User
+            {
+                Email = "Manager@taking.com.br",
+                Username = "Taking Manager",
+                Password = "$2a$11$uVkKp9dH.FHvQeE1sszr.ud.9hYCFPMv58jQaWIkH2or8ArqF4XCG",
+                Phone = "+551141026121",
+                Status = Domain.Enums.UserStatus.Active,
+                Role = Domain.Enums.UserRole.Manager
+            });
+            context.SaveChanges();
+
+            context.Users.Add(new User
+            {
+                Email = "Customer@taking.com.br",
+                Username = "Taking Customer",
+                Password = "$2a$11$uVkKp9dH.FHvQeE1sszr.ud.9hYCFPMv58jQaWIkH2or8ArqF4XCG",
+                Phone = "+551141026121",
+                Status = Domain.Enums.UserStatus.Active,
+                Role = Domain.Enums.UserRole.Customer
+            });
+            context.SaveChanges();
+        }
+
+        if (!context.Branches.Any())
+        {
+            context.Branches.Add(new Branch
+            {
+                Name = "Main store"
+            });
+            context.SaveChanges();
+
+            context.Branches.Add(new Branch
+            {
+                Name = "Neighborhood store"
+            });
+            context.SaveChanges();
+
+            context.Branches.Add(new Branch
+            {
+                Name = "Downtown store"
+            });
+            context.SaveChanges();
+        }
+
+        if (!context.Products.Any())
+        {
+            context.Products.Add(new Product
+            {
+                Title = "Laptop",
+                Price = 1500.00m,
+                Description = "High performance laptop with 16GB RAM and 512GB SSD.",
+                Category = "Electronics",
+                Rating = new Rating
+                {
+                    Rate = 0,
+                    Count = 0
+                }
+            });
+            context.SaveChanges();
+
+            context.Products.Add(new Product
+            {
+                Title = "Smartphone",
+                Price = 800.00m,
+                Description = "Latest model smartphone with 128GB storage and 5G support.",
+                Category = "Electronics",
+                Rating = new Rating
+                {
+                    Rate = 0,
+                    Count = 0
+                }
+            });
+            context.SaveChanges();
+
+            context.Products.Add(new Product
+            {
+                Title = "Wireless Headphones",
+                Price = 200.00m,
+                Description = "Noise-cancelling wireless headphones with 20 hours battery life.",
+                Category = "Accessories",
+                Rating = new Rating
+                {
+                    Rate = 0,
+                    Count = 0
+                }
+            });
+            context.SaveChanges();
+
+            context.Products.Add(new Product
+            {
+                Title = "Smartwatch",
+                Price = 250.00m,
+                Description = "Smartwatch with heart rate monitor and GPS tracking.",
+                Category = "Wearables",
+                Rating = new Rating
+                {
+                    Rate = 0,
+                    Count = 0
+                }
+            });
+            context.SaveChanges();
+
+            context.Products.Add(new Product
+            {
+                Title = "Gaming Console",
+                Price = 500.00m,
+                Description = "Next-gen gaming console with 1TB storage and 4K support.",
+                Category = "Gaming",
+                Rating = new Rating
+                {
+                    Rate = 0,
+                    Count = 0
+                }
+            });
+            context.SaveChanges();
+
+            context.Products.Add(new Product
+            {
+                Title = "Bluetooth Speaker",
+                Price = 100.00m,
+                Description = "Portable Bluetooth speaker with 10 hours battery life.",
+                Category = "Audio",
+                Rating = new Rating
+                {
+                    Rate = 0,
+                    Count = 0
+                }
+            });
+            context.SaveChanges();
+        }
+
     }
 }

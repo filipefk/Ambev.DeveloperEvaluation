@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,15 +10,15 @@ namespace Ambev.DeveloperEvaluation.Common.Security;
 /// </summary>
 public class JwtTokenGenerator : IJwtTokenGenerator
 {
-    private readonly IConfiguration _configuration;
+    private readonly string _secretKey;
 
     /// <summary>
     /// Initializes a new instance of the JWT token generator.
     /// </summary>
     /// <param name="configuration">Application configuration containing the necessary keys for token generation.</param>
-    public JwtTokenGenerator(IConfiguration configuration)
+    public JwtTokenGenerator(string secretKey)
     {
-        _configuration = configuration;
+        _secretKey = secretKey;
     }
 
     /// <summary>
@@ -39,7 +38,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
     public string GenerateToken(IUser user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_configuration["Jwt:SecretKey"]!);
+        var key = Encoding.ASCII.GetBytes(_secretKey);
 
         var claims = new[]
         {
