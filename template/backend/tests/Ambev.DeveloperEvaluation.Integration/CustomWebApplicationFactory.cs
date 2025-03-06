@@ -54,6 +54,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
         var activeUserCreated = UserBuilder.GenerateValidUser();
         activeUserCreated.Status = Domain.Enums.UserStatus.Active;
+        activeUserCreated.Role = Domain.Enums.UserRole.Admin;
         var activeUserPassworNotEncripted = activeUserCreated.Password;
         activeUserCreated.Password = passwordEncriptor.HashPassword(activeUserCreated.Password);
         dbContext.Users.Add(activeUserCreated);
@@ -72,12 +73,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         dbContext.Products.Add(product);
         dbContext.SaveChanges();
         entities["Product"] = product;
-
-        //var productToDelete = ProductBuilder.Build();
-        //dbContext.Products.Add(productToDelete);
-        //dbContext.SaveChanges();
-        //entities["ProductToDelete"] = productToDelete;
-
 
         activeUserCreated.Password = activeUserPassworNotEncripted;
         inactiveUserCreated.Password = inactiveUserPassworNotEncripted;

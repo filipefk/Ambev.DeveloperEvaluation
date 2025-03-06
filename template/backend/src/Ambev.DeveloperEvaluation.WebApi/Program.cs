@@ -12,7 +12,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using System.Security.Principal;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
 
