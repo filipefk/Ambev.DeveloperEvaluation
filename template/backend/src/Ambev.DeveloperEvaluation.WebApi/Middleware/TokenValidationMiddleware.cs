@@ -29,6 +29,14 @@ public class TokenValidationMiddleware
                 {
                     throw new UnauthorizedException("User is not active");
                 }
+                if (user.Role == UserRole.Customer && (context.Request.Path.StartsWithSegments("/api/User")))
+                {
+                    throw new UnauthorizedException("Access denied for Customer role");
+                }
+                if (user.Role == UserRole.Customer && context.Request.Path.StartsWithSegments("/api/Product") && (context.Request.Method != HttpMethods.Get))
+                {
+                    throw new UnauthorizedException("Access denied for Customer role");
+                }
             }
         }
 
