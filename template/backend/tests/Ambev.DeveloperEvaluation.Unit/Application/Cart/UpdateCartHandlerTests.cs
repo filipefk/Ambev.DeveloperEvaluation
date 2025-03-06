@@ -1,10 +1,10 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Cart.UpdateCart;
 using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.Unit.Application.Cart.TestData;
 using AutoMapper;
 using FluentAssertions;
-using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Xunit;
 
@@ -15,7 +15,6 @@ public class UpdateCartHandlerTests
     private readonly ICartRepository _cartRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IConfiguration _configuration;
     private readonly UpdateCartHandler _handler;
 
     public UpdateCartHandlerTests()
@@ -23,8 +22,7 @@ public class UpdateCartHandlerTests
         _cartRepository = Substitute.For<ICartRepository>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<UpdateCartProfile>()));
-        _configuration = Substitute.For<IConfiguration>();
-        _handler = new UpdateCartHandler(_cartRepository, _unitOfWork, _mapper, _configuration);
+        _handler = new UpdateCartHandler(_cartRepository, _unitOfWork, _mapper);
     }
 
     [Fact(DisplayName = "Given valid cart data When updating cart Then returns success response")]
@@ -99,6 +97,34 @@ public class UpdateCartHandlerTests
         await act.Should().ThrowAsync<NotFoundException>();
 
         await _cartRepository.Received(1).GetByIdAsync(command.Id, CancellationToken.None);
+        await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
+    }
+
+    /// <summary>
+    /// Tests that an a valid cart creation request with product quantity exceeding the limit throws a OperationInvalidException.
+    /// </summary>
+    [Fact(DisplayName = "Given valid cart data with product quantity exceeding the limit When updating cart Then throws OperationInvalidException")]
+    public async Task Handle_Valid_Request_With_Product_Quantity_Exceeding_Throws_OperationInvalidException()
+    {
+        // Given
+        var command = UpdateCartHandlerTestData.GenerateValidCommand();
+        command.Products.First().Quantity = RuleConstants.CART_MAXIMUM_QUANTITY_PER_PRODUCT + 1;
+
+        var cart = CartTestData.GenerateValidCart();
+        cart.Id = command.Id;
+
+        _cartRepository.GetByIdAsync(
+            command.Id,
+            Arg.Any<CancellationToken>())
+            .Returns(cart);
+
+        // When
+        var act = () => _handler.Handle(command, CancellationToken.None);
+
+        // Then
+        await act.Should().ThrowAsync<OperationInvalidException>();
+
+        await _cartRepository.Received(0).CreateAsync(Arg.Any<DeveloperEvaluation.Domain.Entities.Cart>(), Arg.Any<CancellationToken>());
         await _unitOfWork.Received(0).CommitAsync(Arg.Any<CancellationToken>());
     }
 }
