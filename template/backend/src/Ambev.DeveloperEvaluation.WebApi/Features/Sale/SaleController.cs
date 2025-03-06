@@ -1,9 +1,11 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sale.CreateSale;
+﻿using Ambev.DeveloperEvaluation.Application.Sale.CancelSale;
+using Ambev.DeveloperEvaluation.Application.Sale.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sale.DeleteSale;
 using Ambev.DeveloperEvaluation.Application.Sale.GetSale;
 using Ambev.DeveloperEvaluation.Application.Sale.ListSales;
 using Ambev.DeveloperEvaluation.Application.Sale.UpdateSale;
 using Ambev.DeveloperEvaluation.WebApi.Common;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sale.CancelSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sale.CreateSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sale.DeleteSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sale.GetSale;
@@ -147,5 +149,27 @@ public class SaleController : BaseController
             result.PageSize);
 
         return OkPaginated(paginatedResponse);
+    }
+
+    [HttpPut("cancel/{id}")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> CancelSale(
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken)
+    {
+        var request = new CancelSaleRequest { Id = id };
+        var validator = new CancelSaleRequestValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
+        var command = _mapper.Map<CancelSaleCommand>(request.Id);
+        await _mediator.Send(command, cancellationToken);
+
+        return OkSimple("Sale canceled successfully");
     }
 }
