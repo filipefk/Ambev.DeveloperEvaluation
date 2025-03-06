@@ -35,7 +35,7 @@ public static class ListUsersHandlerTestData
 
         for (var i = 0; i < listCount; i++)
         {
-            users.Add(UserTestData.GenerateValidUser());
+            users.Add(UserBuilder.GenerateValidUser());
         }
 
         return new PaginatedResult<User>(users, currentPage, pageSize, totalCount);

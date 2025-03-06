@@ -34,7 +34,7 @@ public class UpdateUserHandlerTests
     {
         // Given
         var command = UpdateUserHandlerTestData.GenerateValidCommand();
-        var user = UserTestData.GenerateValidUser();
+        var user = UserBuilder.GenerateValidUser();
         user.Id = command.Id;
 
         _userRepository.GetByEmailAsync(
@@ -88,10 +88,10 @@ public class UpdateUserHandlerTests
     {
         // Given
         var command = UpdateUserHandlerTestData.GenerateValidCommand();
-        var user = UserTestData.GenerateValidUser();
+        var user = UserBuilder.GenerateValidUser();
         user.Id = command.Id;
 
-        var otheUser = UserTestData.GenerateValidUser();
+        var otheUser = UserBuilder.GenerateValidUser();
         otheUser.Email = command.Email;
 
         _userRepository.GetByEmailAsync(
@@ -152,7 +152,7 @@ public class UpdateUserHandlerTests
         var command = UpdateUserHandlerTestData.GenerateValidCommand();
         var originalPassword = command.Password;
         const string hashedPassword = "h@shedPassw0rd";
-        var user = UserTestData.GenerateValidUser();
+        var user = UserBuilder.GenerateValidUser();
         user.Id = command.Id;
 
         _userRepository.GetByEmailAsync(

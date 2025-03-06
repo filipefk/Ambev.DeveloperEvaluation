@@ -18,7 +18,7 @@ public class UserTests
     public void Given_SuspendedUser_When_Activated_Then_StatusShouldBeActive()
     {
         // Arrange
-        var user = UserTestData.GenerateValidUser();
+        var user = UserBuilder.GenerateValidUser();
         user.Status = UserStatus.Suspended;
 
         // Act
@@ -35,7 +35,7 @@ public class UserTests
     public void Given_ActiveUser_When_Suspended_Then_StatusShouldBeSuspended()
     {
         // Arrange
-        var user = UserTestData.GenerateValidUser();
+        var user = UserBuilder.GenerateValidUser();
         user.Status = UserStatus.Active;
 
         // Act
@@ -52,7 +52,7 @@ public class UserTests
     public void Given_ValidUserData_When_Validated_Then_ShouldReturnValid()
     {
         // Arrange
-        var user = UserTestData.GenerateValidUser();
+        var user = UserBuilder.GenerateValidUser();
 
         // Act
         var result = user.Validate();
@@ -72,9 +72,9 @@ public class UserTests
         var user = new User
         {
             Username = "", // Invalid: empty
-            Password = UserTestData.GenerateInvalidPassword(), // Invalid: doesn't meet password requirements
-            Email = UserTestData.GenerateInvalidEmail(), // Invalid: not a valid email
-            Phone = UserTestData.GenerateInvalidPhone(), // Invalid: doesn't match pattern
+            Password = UserBuilder.GenerateInvalidPassword(), // Invalid: doesn't meet password requirements
+            Email = UserBuilder.GenerateInvalidEmail(), // Invalid: not a valid email
+            Phone = UserBuilder.GenerateInvalidPhone(), // Invalid: doesn't match pattern
             Status = UserStatus.Unknown, // Invalid: cannot be Unknown
             Role = UserRole.None // Invalid: cannot be None
         };

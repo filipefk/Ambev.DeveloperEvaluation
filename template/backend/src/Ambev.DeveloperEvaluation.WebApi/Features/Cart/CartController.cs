@@ -92,11 +92,7 @@ public class CartController : BaseController
         var command = _mapper.Map<DeleteCartCommand>(request.Id);
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponse
-        {
-            Success = true,
-            Message = "Cart deleted successfully"
-        });
+        return OkSimple("Cart deleted successfully");
     }
 
     [HttpPut("{id}")]
@@ -108,6 +104,7 @@ public class CartController : BaseController
         [FromBody] UpdateCartRequest request,
         CancellationToken cancellationToken)
     {
+
         var validator = new UpdateCartRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 

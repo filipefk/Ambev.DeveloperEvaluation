@@ -11,8 +11,6 @@ namespace Ambev.DeveloperEvaluation.Integration;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
-    //private Domain.Entities.User _activeUserCreated = default!;
-    //private Domain.Entities.User _inactiveUserCreated = default!;
 
     public Dictionary<string, object> GetEntitiesCreated()
     {
@@ -45,14 +43,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                     options.UseInternalServiceProvider(provider);
                 });
 
-                //using var scope = services.BuildServiceProvider().CreateScope();
-
-                //var dbContext = scope.ServiceProvider.GetRequiredService<DefaultContext>();
-
-                //dbContext.Database.EnsureDeleted();
-
-                //StartDatabase(dbContext);
-
             });
     }
 
@@ -62,7 +52,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
         var passwordEncriptor = new BCryptPasswordHasher();
 
-        var activeUserCreated = UserTestData.GenerateValidUser();
+        var activeUserCreated = UserBuilder.GenerateValidUser();
         activeUserCreated.Status = Domain.Enums.UserStatus.Active;
         var activeUserPassworNotEncripted = activeUserCreated.Password;
         activeUserCreated.Password = passwordEncriptor.HashPassword(activeUserCreated.Password);
@@ -70,7 +60,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         dbContext.SaveChanges();
         entities["ActiveUser"] = activeUserCreated;
 
-        var inactiveUserCreated = UserTestData.GenerateValidUser();
+        var inactiveUserCreated = UserBuilder.GenerateValidUser();
         inactiveUserCreated.Status = Domain.Enums.UserStatus.Inactive;
         var inactiveUserPassworNotEncripted = inactiveUserCreated.Password;
         inactiveUserCreated.Password = passwordEncriptor.HashPassword(inactiveUserCreated.Password);
@@ -78,9 +68,19 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         dbContext.SaveChanges();
         entities["InactiveUser"] = inactiveUserCreated;
 
+        var product = ProductBuilder.Build();
+        dbContext.Products.Add(product);
+        dbContext.SaveChanges();
+        entities["Product"] = product;
+
+        //var productToDelete = ProductBuilder.Build();
+        //dbContext.Products.Add(productToDelete);
+        //dbContext.SaveChanges();
+        //entities["ProductToDelete"] = productToDelete;
+
+
         activeUserCreated.Password = activeUserPassworNotEncripted;
         inactiveUserCreated.Password = inactiveUserPassworNotEncripted;
-
         return entities;
     }
 }

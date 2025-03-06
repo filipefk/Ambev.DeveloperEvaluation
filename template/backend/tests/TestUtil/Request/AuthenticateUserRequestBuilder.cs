@@ -4,7 +4,7 @@ using Bogus;
 
 namespace TestUtil.Request;
 
-public class AuthenticateUserRequestBuilder
+public static class AuthenticateUserRequestBuilder
 {
     public static AuthenticateUserRequest Build()
     {

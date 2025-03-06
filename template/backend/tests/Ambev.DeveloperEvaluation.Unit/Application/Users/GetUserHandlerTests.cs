@@ -28,7 +28,7 @@ public class GetUserHandlerTests
     {
         // Given
         var command = GetUserHandlerTestData.GenerateValidCommand();
-        var user = UserTestData.GenerateValidUser();
+        var user = UserBuilder.GenerateValidUser();
         user.Id = command.Id;
 
         // When

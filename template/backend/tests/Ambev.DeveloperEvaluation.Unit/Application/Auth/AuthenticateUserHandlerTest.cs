@@ -33,7 +33,7 @@ public class AuthenticateUserHandlerTest
     public async Task Handle_ValidRequest_Returns_Success_Response()
     {
         // Given
-        var user = UserTestData.GenerateValidUser();
+        var user = UserBuilder.GenerateValidUser();
         user.Status = DeveloperEvaluation.Domain.Enums.UserStatus.Active;
 
         var command = AuthenticateUserCommandBuilder.Build(user);
@@ -63,7 +63,7 @@ public class AuthenticateUserHandlerTest
     public async Task Handle_Invalid_User_And_Password_Throws_UnauthorizedException()
     {
         // Given
-        var user = UserTestData.GenerateValidUser();
+        var user = UserBuilder.GenerateValidUser();
         user.Status = DeveloperEvaluation.Domain.Enums.UserStatus.Active;
 
         var command = AuthenticateUserCommandBuilder.Build(user);
@@ -87,7 +87,7 @@ public class AuthenticateUserHandlerTest
     public async Task Handle_Invalid_Password_Throws_UnauthorizedException()
     {
         // Given
-        var user = UserTestData.GenerateValidUser();
+        var user = UserBuilder.GenerateValidUser();
         user.Status = DeveloperEvaluation.Domain.Enums.UserStatus.Active;
 
         var command = AuthenticateUserCommandBuilder.Build(user);
@@ -113,7 +113,7 @@ public class AuthenticateUserHandlerTest
     public async Task Handle_Inactive_User_Throws_UnauthorizedException()
     {
         // Given
-        var user = UserTestData.GenerateValidUser();
+        var user = UserBuilder.GenerateValidUser();
         user.Status = DeveloperEvaluation.Domain.Enums.UserStatus.Inactive;
 
         var command = AuthenticateUserCommandBuilder.Build(user);

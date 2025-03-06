@@ -19,7 +19,7 @@ public class UserNameValidatorTests
     public void UsernameTest(int sizeName, bool expectedResult)
     {
         // Arrange
-        var userName = UserTestData.GenerateUserNameWithLength(sizeName);
+        var userName = UserBuilder.GenerateUserNameWithLength(sizeName);
         var validator = new UserNameValidator();
 
         // Act

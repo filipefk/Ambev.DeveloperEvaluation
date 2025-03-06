@@ -8,7 +8,7 @@ public static class HttpResponseUtil
     {
         var responseData = await GetResponseData(response);
 
-        return responseData.RootElement.GetProperty("errorMessages").EnumerateArray();
+        return responseData.RootElement.GetProperty("errors").EnumerateArray();
     }
 
     public static async Task<JsonDocument> GetResponseData(HttpResponseMessage response)
@@ -17,5 +17,13 @@ public static class HttpResponseUtil
 
         return await JsonDocument.ParseAsync(responseBody);
     }
+
+    public static async Task<JsonElement.ArrayEnumerator> GetErrorValidationMessages(HttpResponseMessage response)
+    {
+        var responseData = await GetResponseData(response);
+
+        return responseData.RootElement.EnumerateArray();
+    }
+
 
 }

@@ -9,7 +9,7 @@ namespace TestUtil.Entities;
 /// This class centralizes all test data generation to ensure consistency
 /// across test cases and provide both valid and invalid data scenarios.
 /// </summary>
-public static class UserTestData
+public static class UserBuilder
 {
     /// <summary>
     /// Configures the Faker to generate valid User entities.
@@ -22,6 +22,7 @@ public static class UserTestData
     /// - Role (Customer or Admin)
     /// </summary>
     private static readonly Faker<User> UserFaker = new Faker<User>()
+        .RuleFor(u => u.Id, f => f.Random.Guid())
         .RuleFor(u => u.Username, _ => GenerateValidUsername())
         .RuleFor(u => u.Password, _ => GenerateValidPassword())
         .RuleFor(u => u.Email, _ => GenerateValidEmail())
